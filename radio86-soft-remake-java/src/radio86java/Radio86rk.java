@@ -7,7 +7,9 @@ package radio86java;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.GroupLayout;
+import javax.swing.JEditorPane;
 import javax.swing.SwingUtilities;
+import radio86java.basic.Basic;
 
 /**
  *
@@ -25,6 +27,9 @@ public class Radio86rk extends javax.swing.JFrame {
 		
 		canvas = new Monitor();
 		
+		jScrollPaneConsole.setViewportView(canvas);
+		
+		/*
 		GroupLayout layout = (GroupLayout)getContentPane().getLayout();
 		        layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -40,10 +45,11 @@ public class Radio86rk extends javax.swing.JFrame {
                 .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                 .addContainerGap())
         );
+		*/
 		
 		canvas.init();
-		
-		this.addKeyListener(new KeyAdapter() {
+
+		KeyAdapter listener = new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -61,15 +67,21 @@ public class Radio86rk extends javax.swing.JFrame {
 				});
 			}
 
-		});
-		
+		};
+
+		canvas.addKeyListener(listener);
+		jTabbedPane.addKeyListener(listener);
+
+		// draw the test image;
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				Console c = canvas.getConsole();
-				for(int r = 3; r < 25; r+=4)
-					circle(c, r);
+				if (true) {
+					Console c = canvas.getConsole();
+					for(int r = 3; r < 25; r+=4)
+						circle(c, r);
+				}
 				canvas.setPartialRepaint(true);
 				canvas.repaint();
 				canvas.setPartialRepaint(false);
@@ -77,7 +89,31 @@ public class Radio86rk extends javax.swing.JFrame {
 		});
 		
 	}
-	
+
+	public JEditorPane getEditor() {
+		return jEditorPane;
+	}
+
+	public void updateScreen() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Console c = canvas.getConsole();
+				canvas.setPartialRepaint(true);
+				canvas.repaint();
+				canvas.setPartialRepaint(false);
+			}
+		});
+	}
+
+	public Console getConsole() {
+		return canvas.getConsole();
+	}
+
+	public Monitor getCanvas() {
+		return canvas;
+	}
+
 	private void circle(Console c, double r) {
 		double rx = 75;
 		double ry = 25;
@@ -97,17 +133,31 @@ public class Radio86rk extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane = new javax.swing.JTabbedPane();
+        jScrollPaneConsole = new javax.swing.JScrollPane();
+        jScrollPaneBasic = new javax.swing.JScrollPane();
+        jEditorPane = new javax.swing.JEditorPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
+        runMenu = new javax.swing.JMenu();
+        runMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jScrollPaneConsole.setMinimumSize(new java.awt.Dimension(600, 200));
+        jTabbedPane.addTab("Console", jScrollPaneConsole);
+
+        jScrollPaneBasic.setViewportView(jEditorPane);
+
+        jTabbedPane.addTab("Basic", jScrollPaneBasic);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -136,6 +186,28 @@ public class Radio86rk extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
+        runMenu.setText("Run");
+
+        runMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        runMenuItem.setText("Run Program");
+        runMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runMenuItemActionPerformed(evt);
+            }
+        });
+        runMenu.add(runMenuItem);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        jMenuItem1.setText("Console/Basic");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        runMenu.add(jMenuItem1);
+
+        menuBar.add(runMenu);
+
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 
@@ -155,11 +227,11 @@ public class Radio86rk extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 528, Short.MAX_VALUE)
+            .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
         );
 
         pack();
@@ -169,10 +241,26 @@ public class Radio86rk extends javax.swing.JFrame {
 		System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+	private void runMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMenuItemActionPerformed
+		String listing = jEditorPane.getText();
+		listing += " "; // TODO fix it
+		jTabbedPane.setSelectedIndex(0);
+		Basic basic = new Basic();
+		basic.run(listing, this);
+		canvas.requestFocus();
+	}//GEN-LAST:event_runMenuItemActionPerformed
+
+	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+		jTabbedPane.setSelectedIndex(1 - jTabbedPane.getSelectedIndex());
+		
+		if (jTabbedPane.getSelectedIndex() == 0)
+			canvas.requestFocus();
+	}//GEN-LAST:event_jMenuItem1ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String args[]) {
+	public /* static */ void main(String args[]) {
 		/*
 		 * Set the Nimbus look and feel
 		 */
@@ -219,8 +307,15 @@ public class Radio86rk extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JEditorPane jEditorPane;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPaneBasic;
+    private javax.swing.JScrollPane jScrollPaneConsole;
+    private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenu runMenu;
+    private javax.swing.JMenuItem runMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables

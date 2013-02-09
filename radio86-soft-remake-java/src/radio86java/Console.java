@@ -15,7 +15,7 @@ public class Console {
 
 	public Console() {
 		cls();
-		print("1\n2\n3\n4\n5\n12345\n12345\n");
+		//print("1\n2\n3\n4\n5\n12345\n12345\n");
 	}
 
 	public char[][] getScreenCopy() {
@@ -44,6 +44,12 @@ public class Console {
 				screen[y][x] = ' ';
 			}
 		}
+	}
+
+	public void println(String s) {
+		print(s);
+		cr();
+		lf();
 	}
 
 	public void print(String s) {
@@ -118,6 +124,10 @@ public class Console {
 			cursorY = 0;
 	}
 
+	public void lf() {
+		lf(true);
+	}
+
 	private void lf(boolean fixed) {
 		cursorY++;
 		if (cursorY > lastY) {
@@ -127,7 +137,7 @@ public class Console {
 		}
 	}
 
-	private void cr() {
+	public void cr() {
 		cursorX = 0;
 	}
 

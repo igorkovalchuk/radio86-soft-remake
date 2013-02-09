@@ -15,7 +15,7 @@ public class Charset {
 	
 	private static boolean testing = false;
 	
-	public static void main(String[] argv) {
+	public /* static */ void main(String[] argv) {
 		Charset c = new Charset();
 		testing = true;
 		c.init();

@@ -62,6 +62,7 @@ public class Monitor extends JPanel {
 
 		fullRepaint(g2d);
 
+		// Cursor;
 		g2d.setColor(Color.YELLOW);
 		g2d.drawLine(console.getCursorX() * 8, console.getCursorY() * 8 + 8,
 				console.getCursorX() * 8 + 8, console.getCursorY() * 8 + 8);
@@ -88,7 +89,7 @@ public class Monitor extends JPanel {
 				if (imageIcon == null)
 					continue;
 
-				if (true) {  
+				if (false) {  
 					bi = charset.getBufferedImage((int) c);
 					for (int xx = 0; xx < bi.getWidth(); xx++) {
 						for (int yy = 0; yy < bi.getHeight(); yy++) {
