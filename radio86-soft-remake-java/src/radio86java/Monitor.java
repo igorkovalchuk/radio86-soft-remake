@@ -89,7 +89,7 @@ public class Monitor extends JPanel {
 				if (imageIcon == null)
 					continue;
 
-				if (false) {  
+				if (console.isColoredCharset()) {  
 					bi = charset.getBufferedImage((int) c);
 					for (int xx = 0; xx < bi.getWidth(); xx++) {
 						for (int yy = 0; yy < bi.getHeight(); yy++) {
@@ -107,5 +107,5 @@ public class Monitor extends JPanel {
 		}
 
 	}
-	
+
 }

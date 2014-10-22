@@ -146,6 +146,7 @@ public class Radio86rk extends javax.swing.JFrame {
         runMenu = new javax.swing.JMenu();
         runMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jCheckBoxMenuItemColoredCharset = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -206,6 +207,14 @@ public class Radio86rk extends javax.swing.JFrame {
         });
         runMenu.add(jMenuItem1);
 
+        jCheckBoxMenuItemColoredCharset.setText("Colored charset");
+        jCheckBoxMenuItemColoredCharset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItemColoredCharsetActionPerformed(evt);
+            }
+        });
+        runMenu.add(jCheckBoxMenuItemColoredCharset);
+
         menuBar.add(runMenu);
 
         helpMenu.setMnemonic('h');
@@ -227,7 +236,7 @@ public class Radio86rk extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+            .addComponent(jTabbedPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,6 +267,16 @@ public class Radio86rk extends javax.swing.JFrame {
 		if (jTabbedPane.getSelectedIndex() == 0)
 			canvas.requestFocus();
 	}//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
+        Console console = canvas.getConsole();
+		if (jCheckBoxMenuItemColoredCharset.isSelected()) {
+			console.setColoredCharset(true);
+		}
+		else {
+			console.setColoredCharset(false);
+		}
+    }//GEN-LAST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -309,6 +328,7 @@ public class Radio86rk extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemColoredCharset;
     private javax.swing.JEditorPane jEditorPane;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPaneBasic;

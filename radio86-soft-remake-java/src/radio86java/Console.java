@@ -216,4 +216,14 @@ public class Console {
 		set(x1, y1, c);
 	}
 
+	private boolean coloredCharset = false;
+
+	public void setColoredCharset(boolean value) {
+		this.coloredCharset = value;
+	}
+
+	public boolean isColoredCharset() {
+		return this.coloredCharset;
+	}
+
 }
