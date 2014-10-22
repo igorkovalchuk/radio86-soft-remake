@@ -245,8 +245,10 @@ public class Radio86rk extends javax.swing.JFrame {
 		String listing = jEditorPane.getText();
 		listing += " "; // TODO fix it
 		jTabbedPane.setSelectedIndex(0);
-		Basic basic = new Basic();
-		basic.run(listing, this);
+		//Basic basic = new Basic();
+		//basic.run(listing, this);
+		InterpreterInterface interp = InterpreterFactory.create(InterpreterFactory.Language.JS);
+		interp.run(listing, this);
 		canvas.requestFocus();
 	}//GEN-LAST:event_runMenuItemActionPerformed
 
