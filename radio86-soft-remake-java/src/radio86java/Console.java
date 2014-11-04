@@ -148,12 +148,8 @@ public class Console {
 		} else if (c == 13) {
 			// возврат каретки;
 			cr();
-		} else if (((int) c) > 127) {
-			c = (char) 9;
-			screen[cursorY][cursorX] = c;
-			move(fixed);
 		} else {
-			screen[cursorY][cursorX] = c;
+			screen[cursorY][cursorX] = Charset.converse(c);
 			move(fixed);
 		}
 	}
