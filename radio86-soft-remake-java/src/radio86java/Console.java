@@ -183,7 +183,7 @@ public class Console {
 	}
 
 	public void lf() {
-		lf(true);
+		lf(false);
 	}
 
 	private void lf(boolean fixed) {
