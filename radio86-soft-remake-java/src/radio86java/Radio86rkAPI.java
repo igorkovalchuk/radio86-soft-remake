@@ -1,6 +1,7 @@
 package radio86java;
 
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -40,6 +41,18 @@ public class Radio86rkAPI {
 			instance.screen.getConsole().println(string);
 			instance.screen.updateScreen();
 		}
+	}
+
+	public static String SPC(int n) {
+		return spc(n);
+	}
+
+	public static String spc(int n) {
+		if (n <= 0)
+			return "";
+		char[] c = new char[n];
+		Arrays.fill(c, ' ');
+		return String.valueOf(c);
 	}
 
 	public static void CUR(int x, int y) {
@@ -95,11 +108,11 @@ public class Radio86rkAPI {
 		return value;
 	}
 
-	public static void PAUSE(int seconds) {
+	public static void PAUSE(double seconds) {
 		pause(seconds);
 	}
 
-	public static void pause(int seconds) {
+	public static void pause(double seconds) {
 		if (!(instance != null && instance.screen != null)) {
 			return;
 		}
@@ -111,7 +124,7 @@ public class Radio86rkAPI {
 				if ((System.currentTimeMillis() - time1) > 5 * 60 * 1000) {
 					break; // 5 minutes timeout;
 				}
-				event = instance.screen.getConsole().getLastKeyboardEvent();
+				event = instance.screen.getConsole().getLastKeyboardEvent(100);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException ex) {
@@ -121,11 +134,64 @@ public class Radio86rkAPI {
 		}
 		else if (seconds > 0) {
 			try {
-				Thread.sleep(seconds * 1000);
+				Thread.sleep((int)(seconds * 1000));
 			} catch (InterruptedException ex) {
 				ex.printStackTrace();
 			}
 		}
+	}
+
+	public static String INKEY(int mode) {
+		return inkey(mode);
+	}
+
+	public static String inkey(int mode) {
+		if (!(instance != null && instance.screen != null)) {
+			return "";
+		}
+		
+		KeyEvent event = null;
+		
+		if (mode == 0) {
+			// wait until input;
+			long time1 = System.currentTimeMillis();
+			while(event == null) {
+				if ((System.currentTimeMillis() - time1) > 5 * 60 * 1000) {
+					break; // 5 minutes timeout;
+				}
+				event = instance.screen.getConsole().getLastKeyboardEvent(5000);
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		else {
+			// don't wait;
+			event = instance.screen.getConsole().getLastKeyboardEvent(5000);
+		}
+		
+		if (event == null)
+			return "";
+		
+		char c = event.getKeyChar();
+		int k = event.getKeyCode();
+		
+		if (event.isActionKey()) {
+			if (k == KeyEvent.VK_UP) {
+				return "up";
+			} else if (k == KeyEvent.VK_DOWN) {
+				return "down";
+			} else if (k == KeyEvent.VK_RIGHT) {
+				return "right";
+			} else if (k == KeyEvent.VK_LEFT) {
+				return "left";
+			} else {
+				return "";
+			}
+		}
+		return String.valueOf(c);
 	}
 
 }

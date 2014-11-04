@@ -109,7 +109,7 @@ public class Console {
 
 	}
 
-	public KeyEvent getLastKeyboardEvent() {
+	public KeyEvent getLastKeyboardEvent(int timeout) {
 		KeyEvent event;
 		Long time;
 		synchronized(keyboardQueue) {
@@ -126,7 +126,9 @@ public class Console {
 					break;
 				}
 				else {
-					if ((System.currentTimeMillis() - time) < 100) { // 0.1 sec
+					if (timeout < 0)
+						break;
+					if ((System.currentTimeMillis() - time) < timeout) {
 						break;
 					}
 					else {

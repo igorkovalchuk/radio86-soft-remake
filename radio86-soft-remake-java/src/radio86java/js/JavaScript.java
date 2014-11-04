@@ -25,6 +25,8 @@ public class JavaScript implements InterpreterInterface {
 		ScriptEngine engine = manager.getEngineByName("javascript");
 
 		String functions = 
+				"this.inkey = r.inkey;" +
+				"this.INKEY = r.inkey;" +
 				"this.pause = r.pause;" +
 				"this.PAUSE = r.pause;" +
 				"this.input = r.input;" +
