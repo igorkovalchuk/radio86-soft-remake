@@ -27,13 +27,13 @@ public class Monitor extends JPanel {
 		setSize(d);
 		charset.init();
 
-		this.addKeyListener(new KeyAdapter() {
+		//this.addKeyListener(new KeyAdapter() {
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("Pressed: Monitor " + e);
-			}
-		});
+			//@Override
+			//public void keyPressed(KeyEvent e) {
+				//System.out.println("Pressed: Monitor " + e);
+			//}
+		//});
 
 	}
 
@@ -67,7 +67,7 @@ public class Monitor extends JPanel {
 		g2d.drawLine(console.getCursorX() * 8, console.getCursorY() * 8 + 8,
 				console.getCursorX() * 8 + 8, console.getCursorY() * 8 + 8);
 
-		System.out.println("paint: " + System.currentTimeMillis());
+		//System.out.println("paint: " + System.currentTimeMillis());
 	}
 
 	private void fullRepaint(Graphics2D g2d) {

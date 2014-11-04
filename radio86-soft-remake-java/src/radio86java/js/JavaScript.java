@@ -14,6 +14,7 @@ public class JavaScript implements InterpreterInterface {
 	@Override
 	public void run(String listing, Radio86rk screen) {
 		//Radio86rkAPI api = new Radio86rkAPI(screen);
+		screen.getConsole().setInteractive(false);
 		Radio86rkAPI api = Radio86rkAPI.initializeInstance(screen);
 		HashMap<String, Object> m = new HashMap<String, Object>();
 		m.put("R", api);
@@ -24,6 +25,10 @@ public class JavaScript implements InterpreterInterface {
 		ScriptEngine engine = manager.getEngineByName("javascript");
 
 		String functions = 
+				"this.pause = r.pause;" +
+				"this.PAUSE = r.pause;" +
+				"this.input = r.input;" +
+				"this.INPUT = r.input;" +
 				"this.print = r.print;" +
 				"this.PRINT = r.print;" +
 				"this.cur = r.cur;" +

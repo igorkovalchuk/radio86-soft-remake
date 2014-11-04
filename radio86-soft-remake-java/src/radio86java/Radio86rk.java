@@ -53,18 +53,20 @@ public class Radio86rk extends javax.swing.JFrame {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println("Pressed: " + e);
-				
+
 				canvas.getConsole().key(e);
-				
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						canvas.setPartialRepaint(true);
-						canvas.repaint();
-						canvas.setPartialRepaint(false);
-					}
-				});
+
+				if (canvas.getConsole().isInteractive()) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							canvas.setPartialRepaint(true);
+							canvas.repaint();
+							canvas.setPartialRepaint(false);
+						}
+					});
+				}
+
 			}
 
 		};
@@ -256,9 +258,18 @@ public class Radio86rk extends javax.swing.JFrame {
 		jTabbedPane.setSelectedIndex(0);
 		//Basic basic = new Basic();
 		//basic.run(listing, this);
-		InterpreterInterface interp = InterpreterFactory.create(InterpreterFactory.Language.JS);
-		interp.run(listing, this);
 		canvas.requestFocus();
+		final String listing1 = listing;
+
+		// Do these things in the non-UI thread;
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				InterpreterInterface interp = InterpreterFactory.create(InterpreterFactory.Language.JS);
+				interp.run(listing1, Radio86rk.this);
+			}
+		});
+		thread.start();
 	}//GEN-LAST:event_runMenuItemActionPerformed
 
 	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

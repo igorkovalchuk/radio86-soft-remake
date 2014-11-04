@@ -2,6 +2,8 @@ package radio86java;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.LinkedList;
+import javax.swing.SwingUtilities;
 
 public class Console {
 
@@ -59,24 +61,84 @@ public class Console {
 		}
 	}
 
+	private boolean interactive = true;
+
+	public void setInteractive(boolean interactive) {
+		this.interactive = interactive;
+		synchronized(keyboardQueue) {
+			keyboardQueue.clear();
+			keyboardQueueDate.clear();
+		}
+	}
+
+	public boolean isInteractive() {
+		return interactive;
+	}
+
+	private final LinkedList<KeyEvent> keyboardQueue = new LinkedList<KeyEvent>();
+	private final LinkedList<Long> keyboardQueueDate = new LinkedList<Long>();
+
 	public void key(KeyEvent e) {
 		char c = e.getKeyChar();
 		int k = e.getKeyCode();
-		if (k == KeyEvent.VK_SHIFT) {
-			// does nothing;
-		} else if (e.isActionKey()) {
-			if (k == KeyEvent.VK_UP) {
-				moveUp();
-			} else if (k == KeyEvent.VK_DOWN) {
-				lf(false);
-			} else if (k == KeyEvent.VK_RIGHT) {
-				move(false);
-			} else if (k == KeyEvent.VK_LEFT) {
-				moveLeft(false);
+
+		if (interactive) {
+			if (k == KeyEvent.VK_SHIFT) {
+				// does nothing;
+			} else if (e.isActionKey()) {
+				if (k == KeyEvent.VK_UP) {
+					moveUp();
+				} else if (k == KeyEvent.VK_DOWN) {
+					lf(false);
+				} else if (k == KeyEvent.VK_RIGHT) {
+					move(false);
+				} else if (k == KeyEvent.VK_LEFT) {
+					moveLeft(false);
+				}
+			} else {
+				print(c, false);
 			}
-		} else {
-			print(c, false);
 		}
+		else {
+			synchronized(keyboardQueue) {
+				keyboardQueue.add(e);
+				keyboardQueueDate.add(System.currentTimeMillis());
+				System.out.println("Keyboard put in queue: " + e);
+			}
+		}
+
+	}
+
+	public KeyEvent getLastKeyboardEvent() {
+		KeyEvent event;
+		Long time;
+		synchronized(keyboardQueue) {
+			while(true) {
+				event = null;
+				time = null;
+				try {
+					event = keyboardQueue.pop();
+					time = keyboardQueueDate.pop();
+				}
+				catch(java.util.NoSuchElementException ex) {
+				}
+				if (event == null) {
+					break;
+				}
+				else {
+					if ((System.currentTimeMillis() - time) < 100) { // 0.1 sec
+						break;
+					}
+					else {
+						event = null;
+					}
+				}
+			}
+		}
+		if (event != null) {
+			System.out.println("Keyboard returns from queue: " + event);
+		}
+		return event;
 	}
 
 	public void print(char c, boolean fixed) {

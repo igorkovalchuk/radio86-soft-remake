@@ -1,5 +1,10 @@
 package radio86java;
 
+import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  * The screen has 0-24 (25 Y), 0-63 (64 X) chars;
  * Coords start at left bottom corner;
@@ -17,6 +22,12 @@ public class Radio86rkAPI {
 
 	private Radio86rkAPI(Radio86rk screen1) {
 		screen = screen1;
+	}
+
+	public static void interactive(boolean interact) {
+		if (instance != null && instance.screen != null) {
+			instance.screen.getConsole().setInteractive(interact);
+		}
 	}
 
 	public static void PRINT(String string) {
@@ -65,13 +76,55 @@ public class Radio86rkAPI {
 		}
 	}
 
-	public static void INPUT() {
-		input();
+	public static String INPUT(String message) {
+		return input(message);
 	}
 
-	public static void input() {
+	//private static Object inputMonitor = new Object();
+
+	public static String input(String message) {
+		String value = "";
 		if (instance != null && instance.screen != null) {
-			
+			value = JOptionPane.showInputDialog(instance.screen, message, "");
+			//while(true) {
+				// if without an JOptionPane wait and allow another thread 
+				// to read an input String from user;	
+			//}
+		}
+		print(message + " " + value);
+		return value;
+	}
+
+	public static void PAUSE(int seconds) {
+		pause(seconds);
+	}
+
+	public static void pause(int seconds) {
+		if (!(instance != null && instance.screen != null)) {
+			return;
+		}
+		if (seconds == 0) {
+			// waiting for the user input (press any key);
+			long time1 = System.currentTimeMillis();
+			KeyEvent event = null;
+			while(event == null) {
+				if ((System.currentTimeMillis() - time1) > 5 * 60 * 1000) {
+					break; // 5 minutes timeout;
+				}
+				event = instance.screen.getConsole().getLastKeyboardEvent();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		else if (seconds > 0) {
+			try {
+				Thread.sleep(seconds * 1000);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 
