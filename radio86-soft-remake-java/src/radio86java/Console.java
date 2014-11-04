@@ -236,6 +236,15 @@ public class Console {
 		cursorY = y;
 	}
 
+	public void tab(int x) {
+		if ((cursorX + x) > lastX) {
+			// ignore - this is an incorrect value;
+		}
+		else {
+			cursorX = cursorX + x;
+		}
+	}
+
 	private int pointX = 0;
 	private int pointY = 0;
 

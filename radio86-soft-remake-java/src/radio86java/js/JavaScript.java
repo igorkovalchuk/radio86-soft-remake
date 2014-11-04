@@ -35,6 +35,10 @@ public class JavaScript implements InterpreterInterface {
 				"this.PRINT = r.print;" +
 				"this.cur = r.cur;" +
 				"this.CUR = r.cur;" +
+				"this.tab = r.tab;" +
+				"this.TAB = r.tab;" +
+				"this.spc = r.spc;" +
+				"this.SPC = r.spc;" +
 				"this.cls = r.cls;" +
 				"this.CLS = r.cls;" +
 				"this.plot = r.plot;" +

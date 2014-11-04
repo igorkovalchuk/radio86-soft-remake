@@ -65,6 +65,15 @@ public class Radio86rkAPI {
 			instance.screen.getConsole().point(x, y);
 	}
 
+	public static void TAB(int x) {
+		tab(x);
+	}
+
+	public static void tab(int x) {
+		if (instance != null && instance.screen != null)
+			instance.screen.getConsole().tab(x);
+	}
+
 	public static void CLS() {
 		cls();
 	}
