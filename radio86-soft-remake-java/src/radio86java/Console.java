@@ -306,6 +306,9 @@ public class Console {
 	private int pointY = 0;
 
 	public void plot(int x, int y, int z) {
+		
+		System.out.println("plot " + x + " " + y + " " + z);
+		
 		pointX = x;
 		pointY = y;
 		int x1 = x / 2;
@@ -343,7 +346,12 @@ public class Console {
 				
 			}
 		} else {
-			c = (char)pseudo1;
+			if (z == 0) {
+				// don't draw empty points at all;
+			}
+			else {
+				c = (char)pseudo1;
+			}
 		}
 		set(x1, y1, c);
 	}
