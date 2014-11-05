@@ -348,6 +348,53 @@ public class Console {
 		set(x1, y1, c);
 	}
 
+	public void line(int toX, int toY) {
+		int x1 = pointX;
+		int y1 = pointY;
+		int x2 = toX;
+		int y2 = toY;
+		int tmp;
+
+		int dx = Math.abs(x2 - x1);
+		int dy = Math.abs(y2 - y1);
+
+		if (x1 == x2) {
+			if (y1 > y2) { tmp = y1; y1 = y2; y2 = tmp; }
+			for(int y = y1; y <= y2; y++)
+				plot(x1, y, 1);
+		}
+		else if (y1 == y2) {
+			if (x1 > x2) { tmp = x1; x1 = x2; x2 = tmp; }
+			for(int x = x1; x <= x2; x++)
+				plot(x, y1, 1);
+		}
+		else {
+			if (dx > dy) {
+				if (x1 > x2) {
+					tmp = x1; x1 = x2; x2 = tmp;
+					tmp = y1; y1 = y2; y2 = tmp;
+				}
+				dy = y2 - y1;
+				for(int x = x1; x <= x2; x++) {
+					plot(x, y1 + (x - x1) * dy/dx, 1);
+				}
+			}
+			else {
+				if (y1 > y2) {
+					tmp = x1; x1 = x2; x2 = tmp;
+					tmp = y1; y1 = y2; y2 = tmp;
+				}
+				dx = x2 - x1;
+				for(int y = y1; y <= y2; y++) {
+					plot(x1 + (y - y1) * dx/dy, y, 1);
+				}
+			}
+		}
+
+		pointX = toX;
+		pointY = toY;
+	}
+
 	private boolean coloredCharset = false;
 
 	public void setColoredCharset(boolean value) {

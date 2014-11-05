@@ -44,7 +44,9 @@ public class JavaScript implements InterpreterInterface {
 				"this.cls = r86.cls;" +
 				"this.CLS = r86.cls;" +
 				"this.plot = r86.plot;" +
-				"this.PLOT = r86.plot;";
+				"this.PLOT = r86.plot;" +
+				"this.line = r86.line;" +
+				"this.LINE = r86.line;";
 
 		try {
 			Object result = engine.eval(functions + listing);

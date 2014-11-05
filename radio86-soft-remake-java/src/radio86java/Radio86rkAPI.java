@@ -215,4 +215,15 @@ public class Radio86rkAPI {
 		return value;
 	}
 
+	public static void LINE(int x, int y) {
+		line(x, y);
+	}
+
+	public static void line(int x, int y) {
+		if (instance != null && instance.screen != null) {
+			instance.screen.getConsole().line(x, y);
+			instance.screen.updateScreen();
+		}
+	}
+
 }
