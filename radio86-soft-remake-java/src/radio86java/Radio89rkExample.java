@@ -59,7 +59,19 @@ listing = "CLS()\n"+
 "  dy = Math.sin(a) * radius;\n"+
 "  PLOT(50+dx,30+dy,1);\n"+
 "}\n";
-	
+
+listing = 
+"cls()\n" +
+"cur(3, 3); print(\"Прямоугольник\") \n" +
+"for(x = 0; x < 128; x+=1) {\n" +
+"  plot(x,0,1);\n" +
+"  plot(x,49,1);\n" +
+"}\n" +
+"for(y = 0; y < 50; y+=1) {\n" +
+"  plot(0,y,1)\n" +
+"  plot(127,y,1)\n" +
+"}\n";
+
 		final Radio86rk screen = new Radio86rk();
 		
 		screen.getEditor().setText(listing);

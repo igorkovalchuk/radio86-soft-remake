@@ -64,8 +64,16 @@ public class Monitor extends JPanel {
 
 		// Cursor;
 		g2d.setColor(Color.YELLOW);
-		g2d.drawLine(console.getCursorX() * 8, console.getCursorY() * 8 + 8,
-				console.getCursorX() * 8 + 8, console.getCursorY() * 8 + 8);
+		int x = console.getCursorX();
+		int y = console.getCursorY();
+		if (console.getDirectionUp() > 0) {
+			y = (console.getMaxY() - 1 - console.getCursorY());
+		}
+		if (x >= 0 && x < console.getMaxX() && y >= 0 && y < console.getMaxY()) {
+			x = x * 8;
+			y = y * 8 + 8;
+			g2d.drawLine(x, y, x + 8, y);
+		}
 
 		//System.out.println("paint: " + System.currentTimeMillis());
 	}
@@ -76,36 +84,60 @@ public class Monitor extends JPanel {
 		//plot(1,0,1);
 		//plot(1,1,1);
 		//plot(0,1,1);
-		
+
+		int screenY = 0;
+		int screenX = 0;
+
+		if (console.getDirectionUp() > 0) {
+			for (int y = (console.getMaxY() - 1); y >= 0; y--) {
+				for (int x = 0; x < console.getMaxX(); x++) {
+					char c = console.get(x, y);
+					render(g2d, screenX, screenY, c, console);
+					screenX++;
+				}
+				screenY++;
+				screenX = 0;
+			}
+		}
+		else {
+			for (int y = 0; y < console.getMaxY(); y++) {
+				for (int x = 0; x < console.getMaxX(); x++) {
+					char c = console.get(x, y);
+					render(g2d, screenX, screenY, c, console);
+					screenX++;
+				}
+				screenY++;
+				screenX = 0;
+			}			
+		}
+
+	}
+
+	private void render(Graphics2D g2d, int screenX, int screenY, char c, Console console) {
 		ImageIcon imageIcon;
 		BufferedImage bi;
 
-		for (int y = 0; y < console.getMaxY(); y++) {
-			for (int x = 0; x < console.getMaxX(); x++) {
-				char c = console.get(x, y);
-				if (((int)c == 32) || ((int)c == 0))
-					continue;
-				imageIcon = charset.getImageIcon((int) c);
-				if (imageIcon == null)
-					continue;
+		if (((int)c == 32) || ((int)c == 0))
+			return;
 
-				if (console.isColoredCharset()) {  
-					bi = charset.getBufferedImage((int) c);
-					for (int xx = 0; xx < bi.getWidth(); xx++) {
-						for (int yy = 0; yy < bi.getHeight(); yy++) {
-							int rgb = bi.getRGB(xx, yy);
-							if (rgb != -16777216)
-								rgb -= 3;
-							bi.setRGB(xx, yy, rgb);
-						}
-					}
-					imageIcon = new ImageIcon(bi);
+		imageIcon = charset.getImageIcon((int) c);
+		if (imageIcon == null)
+			return;
+
+		if (console.isColoredCharset()) {  
+			bi = charset.getBufferedImage((int) c);
+			for (int xx = 0; xx < bi.getWidth(); xx++) {
+				for (int yy = 0; yy < bi.getHeight(); yy++) {
+					int rgb = bi.getRGB(xx, yy);
+					if (rgb != -16777216)
+						rgb -= 3;
+					bi.setRGB(xx, yy, rgb);
 				}
-
-				g2d.drawImage(imageIcon.getImage(), x * 8, y * 8, this);
 			}
+			imageIcon = new ImageIcon(bi);
 		}
 
+		g2d.drawImage(imageIcon.getImage(), screenX * 8, screenY * 8, this);
 	}
 
 }
