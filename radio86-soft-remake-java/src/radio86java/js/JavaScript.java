@@ -17,32 +17,34 @@ public class JavaScript implements InterpreterInterface {
 		screen.getConsole().setInteractive(false);
 		Radio86rkAPI api = Radio86rkAPI.initializeInstance(screen);
 		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("R", api);
-		m.put("r", api);
+		m.put("R86", api);
+		m.put("r86", api);
 		SimpleBindings b = new SimpleBindings(m);
 		ScriptEngineManager manager = new ScriptEngineManager();
 		manager.setBindings(b);
 		ScriptEngine engine = manager.getEngineByName("javascript");
 
 		String functions = 
-				"this.inkey = r.inkey;" +
-				"this.INKEY = r.inkey;" +
-				"this.pause = r.pause;" +
-				"this.PAUSE = r.pause;" +
-				"this.input = r.input;" +
-				"this.INPUT = r.input;" +
-				"this.print = r.print;" +
-				"this.PRINT = r.print;" +
-				"this.cur = r.cur;" +
-				"this.CUR = r.cur;" +
-				"this.tab = r.tab;" +
-				"this.TAB = r.tab;" +
-				"this.spc = r.spc;" +
-				"this.SPC = r.spc;" +
-				"this.cls = r.cls;" +
-				"this.CLS = r.cls;" +
-				"this.plot = r.plot;" +
-				"this.PLOT = r.plot;";
+				"this.inkey = r86.inkey;" +
+				"this.INKEY = r86.inkey;" +
+				"this.pause = r86.pause;" +
+				"this.PAUSE = r86.pause;" +
+				"this.input = r86.input;" +
+				"this.INPUT = r86.input;" +
+				"this.screen = r86.screen;" +
+				"this.SCREEN = r86.screen;" +
+				"this.print = r86.print;" +
+				"this.PRINT = r86.print;" +
+				"this.cur = r86.cur;" +
+				"this.CUR = r86.cur;" +
+				"this.tab = r86.tab;" +
+				"this.TAB = r86.tab;" +
+				"this.spc = r86.spc;" +
+				"this.SPC = r86.spc;" +
+				"this.cls = r86.cls;" +
+				"this.CLS = r86.cls;" +
+				"this.plot = r86.plot;" +
+				"this.PLOT = r86.plot;";
 
 		try {
 			Object result = engine.eval(functions + listing);

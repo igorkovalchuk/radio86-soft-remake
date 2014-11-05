@@ -203,4 +203,16 @@ public class Radio86rkAPI {
 		return String.valueOf(c);
 	}
 
+	public String SCREEN(int x, int y) {
+		return screen(x, y);
+	}
+
+	public String screen(int x, int y) {
+		String value = "";
+		if (instance != null && instance.screen != null) {
+			value = String.valueOf(instance.screen.getConsole().get(x, y));
+		}
+		return value;
+	}
+
 }

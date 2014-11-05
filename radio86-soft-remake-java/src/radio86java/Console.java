@@ -158,6 +158,12 @@ public class Console {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
+	private boolean inScreen(int x, int y) {
+		if ((y >= 0) && (y <= lastY) && (x >= 0) && (x <= lastX))
+			return true;
+		return false;
+	}
+
 	private void print(char c, boolean fixed) {
 		if (c == 10) {
 			// перевод строки;
@@ -166,7 +172,7 @@ public class Console {
 			// возврат каретки;
 			cr();
 		} else {
-			if ((cursorY >= 0) && (cursorY <= lastY) && (cursorX >= 0) && (cursorX <= lastX))
+			if (inScreen(cursorX, cursorY))
 				screen[cursorY][cursorX] = Charset.converse(c);
 			move(fixed);
 		}
@@ -262,7 +268,9 @@ public class Console {
 	}
 
 	public char get(int x, int y) {
-		return screen[y][x];
+		if (inScreen(x,y))
+			return screen[y][x];
+		return 0;
 	}
 
 	public void set(int x, int y, char c) {
