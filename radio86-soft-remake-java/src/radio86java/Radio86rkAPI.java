@@ -36,7 +36,17 @@ public class Radio86rkAPI {
 	}
 
 	public static void print(String string) {
-		//System.out.println("PRINT " + string);
+		if (instance != null && instance.screen != null) {
+			instance.screen.getConsole().print(string);
+			instance.screen.updateScreen();
+		}
+	}
+
+	public static void PRINTLN(String string) {
+		println(string);
+	}
+
+	public static void println(String string) {
 		if (instance != null && instance.screen != null) {
 			instance.screen.getConsole().println(string);
 			instance.screen.updateScreen();

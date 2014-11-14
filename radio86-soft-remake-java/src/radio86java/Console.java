@@ -61,6 +61,13 @@ public class Console {
 		}
 	}
 
+	public void print(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			print(c, true);
+		}
+	}
+
 	public void println(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);

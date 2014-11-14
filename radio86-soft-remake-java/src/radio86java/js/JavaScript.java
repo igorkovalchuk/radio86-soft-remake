@@ -35,6 +35,8 @@ public class JavaScript implements InterpreterInterface {
 				"this.SCREEN = r86.screen;" +
 				"this.print = r86.print;" +
 				"this.PRINT = r86.print;" +
+				"this.println = r86.println;" +
+				"this.PRINTLN = r86.println;" +
 				"this.cur = r86.cur;" +
 				"this.CUR = r86.cur;" +
 				"this.tab = r86.tab;" +
