@@ -2,20 +2,35 @@ package radio86java;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.LinkedList;
+import javax.swing.SwingUtilities;
 
 public class Console {
 
-	private int cursorX = 0;
-	private int cursorY = 0;
-	private int maxX = 64;
-	private int maxY = 25;
+	private int maxX = 64; // 64
+	private int maxY = 25; // 25
 	private int lastX = maxX - 1;
 	private int lastY = maxY - 1;
 	private char[][] screen = new char[maxY][maxX];
 
+	private int cursorX = 0;
+	private int cursorY = 0;
+
+	// In this place we define a coordinate system type;
+	// 1 => 0 at bottom, 24 at top; 0 => 0 at top, 24 at bottom;
+	private int directionUp = 1; // 0 or 1; default is 1;
+
 	public Console() {
 		cls();
-		//print("1\n2\n3\n4\n5\n12345\n12345\n");
+		pointUpLeft();
+	}
+
+	public int getDirectionUp() {
+		return directionUp;
+	}
+
+	private void pointUpLeft() {
+		point(0, lastY);
 	}
 
 	public char[][] getScreenCopy() {
@@ -46,52 +61,126 @@ public class Console {
 		}
 	}
 
-	public void println(String s) {
-		print(s);
-		cr();
-		lf();
+	public void print(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			print(c, true);
+		}
 	}
 
-	public void print(String s) {
+	public void println(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			print(c, false);
 		}
+		cr();
+		lf();
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	private boolean interactive = true;
+
+	public void setInteractive(boolean interactive) {
+		this.interactive = interactive;
+		synchronized(keyboardQueue) {
+			keyboardQueue.clear();
+			keyboardQueueDate.clear();
+		}
+	}
+
+	public boolean isInteractive() {
+		return interactive;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	private final LinkedList<KeyEvent> keyboardQueue = new LinkedList<KeyEvent>();
+	private final LinkedList<Long> keyboardQueueDate = new LinkedList<Long>();
 
 	public void key(KeyEvent e) {
 		char c = e.getKeyChar();
 		int k = e.getKeyCode();
-		if (k == KeyEvent.VK_SHIFT) {
-			// does nothing;
-		} else if (e.isActionKey()) {
-			if (k == KeyEvent.VK_UP) {
-				moveUp();
-			} else if (k == KeyEvent.VK_DOWN) {
-				lf(false);
-			} else if (k == KeyEvent.VK_RIGHT) {
-				move(false);
-			} else if (k == KeyEvent.VK_LEFT) {
-				moveLeft(false);
+
+		if (interactive) {
+			if (k == KeyEvent.VK_SHIFT) {
+				// does nothing;
+			} else if (e.isActionKey()) {
+				if (k == KeyEvent.VK_UP) {
+					moveUp();
+				} else if (k == KeyEvent.VK_DOWN) {
+					lf(false);
+				} else if (k == KeyEvent.VK_RIGHT) {
+					move(false);
+				} else if (k == KeyEvent.VK_LEFT) {
+					moveLeft(false);
+				}
+			} else {
+				print(c, false);
 			}
-		} else {
-			print(c, false);
 		}
+		else {
+			synchronized(keyboardQueue) {
+				keyboardQueue.add(e);
+				keyboardQueueDate.add(System.currentTimeMillis());
+				//System.out.println("Keyboard put in queue: " + e);
+			}
+		}
+
 	}
 
-	public void print(char c, boolean fixed) {
+	public KeyEvent getLastKeyboardEvent(int timeout) {
+		KeyEvent event;
+		Long time;
+		synchronized(keyboardQueue) {
+			while(true) {
+				event = null;
+				time = null;
+				try {
+					event = keyboardQueue.pop();
+					time = keyboardQueueDate.pop();
+				}
+				catch(java.util.NoSuchElementException ex) {
+				}
+				if (event == null) {
+					break;
+				}
+				else {
+					if (timeout < 0)
+						break;
+					if ((System.currentTimeMillis() - time) < timeout) {
+						break;
+					}
+					else {
+						event = null;
+					}
+				}
+			}
+		}
+		if (event != null) {
+			//System.out.println("Keyboard returns from queue: " + event);
+		}
+		return event;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	private boolean inScreen(int x, int y) {
+		if ((y >= 0) && (y <= lastY) && (x >= 0) && (x <= lastX))
+			return true;
+		return false;
+	}
+
+	private void print(char c, boolean fixed) {
 		if (c == 10) {
 			// перевод строки;
 			lf(fixed);
 		} else if (c == 13) {
 			// возврат каретки;
 			cr();
-		} else if (((int) c) > 127) {
-			c = (char) 9;
-			screen[cursorY][cursorX] = c;
-			move(fixed);
 		} else {
-			screen[cursorY][cursorX] = c;
+			if (inScreen(cursorX, cursorY))
+				screen[cursorY][cursorX] = Charset.converse(c);
 			move(fixed);
 		}
 	}
@@ -104,7 +193,7 @@ public class Console {
 				cursorX = lastX;
 			} else {
 				cursorX = 0;
-				lf(fixed);
+				lf(false);
 			}
 		}
 	}
@@ -119,21 +208,42 @@ public class Console {
 	}
 
 	private void moveUp() {
-		cursorY--;
-		if (cursorY < 0)
-			cursorY = 0;
+		if (directionUp > 0) {
+			// coordinates of (0, 0) at the bottom left corner of the screen;
+			cursorY++;
+			if (cursorY > lastY)
+				cursorY = lastY;
+		}
+		else {
+			// coordinates of (0, 0) at the top left corner;
+			cursorY--;
+			if (cursorY < 0)
+				cursorY = 0;
+		}
 	}
 
 	public void lf() {
-		lf(true);
+		lf(false);
 	}
 
 	private void lf(boolean fixed) {
-		cursorY++;
-		if (cursorY > lastY) {
-			cursorY = lastY;
-			if (!fixed)
-				scroll();
+		if (directionUp > 0) {
+			if (cursorY <= 0) {
+				cursorY = 0;
+				if (!fixed)
+					scroll();
+			}
+			else {
+				cursorY--;
+			}
+		}
+		else {
+			cursorY++;
+			if (cursorY > lastY) {
+				cursorY = lastY;
+				if (!fixed)
+					scroll();
+			}
 		}
 	}
 
@@ -142,18 +252,32 @@ public class Console {
 	}
 
 	private void scroll() {
-		for (int y = 0; y < lastY; y++) {
+		if (directionUp > 0) {
+			for (int y = lastY; y > 0; y--) {
+				for (int x = 0; x < maxX; x++) {
+					screen[y][x] = screen[y - 1][x];
+				}
+			}
 			for (int x = 0; x < maxX; x++) {
-				screen[y][x] = screen[y + 1][x];
+				screen[0][x] = ' ';
 			}
 		}
-		for (int x = 0; x < maxX; x++) {
-			screen[lastY][x] = ' ';
+		else {
+			for (int y = 0; y < lastY; y++) {
+				for (int x = 0; x < maxX; x++) {
+					screen[y][x] = screen[y + 1][x];
+				}
+			}
+			for (int x = 0; x < maxX; x++) {
+				screen[lastY][x] = ' ';
+			}
 		}
 	}
 
 	public char get(int x, int y) {
-		return screen[y][x];
+		if (inScreen(x,y))
+			return screen[y][x];
+		return 0;
 	}
 
 	public void set(int x, int y, char c) {
@@ -176,10 +300,22 @@ public class Console {
 		cursorY = y;
 	}
 
+	public void tab(int x) {
+		if ((cursorX + x) > lastX) {
+			// ignore - this is an incorrect value;
+		}
+		else {
+			cursorX = cursorX + x;
+		}
+	}
+
 	private int pointX = 0;
 	private int pointY = 0;
 
 	public void plot(int x, int y, int z) {
+		
+		System.out.println("plot " + x + " " + y + " " + z);
+		
 		pointX = x;
 		pointY = y;
 		int x1 = x / 2;
@@ -187,7 +323,13 @@ public class Console {
 		if (x1 < 0 || y1 < 0 || x1 > lastX || y1 > lastY)
 			return;
 		int rx = x - x1 * 2; // rest 1 or 0;
-		int ry = y - y1 * 2;
+		int ry;
+		if (directionUp > 0) {
+			ry = 1 - (y - y1 * 2);
+		}
+		else {
+			ry = (y - y1 * 2);
+		}
 		int pseudo1 = 0;
 		if (rx == 0 && ry == 0) {
 			pseudo1 = 1;
@@ -211,9 +353,71 @@ public class Console {
 				
 			}
 		} else {
-			c = (char)pseudo1;
+			if (z == 0) {
+				// don't draw empty points at all;
+			}
+			else {
+				c = (char)pseudo1;
+			}
 		}
 		set(x1, y1, c);
+	}
+
+	public void line(int toX, int toY) {
+		int x1 = pointX;
+		int y1 = pointY;
+		int x2 = toX;
+		int y2 = toY;
+		int tmp;
+
+		int dx = Math.abs(x2 - x1);
+		int dy = Math.abs(y2 - y1);
+
+		if (x1 == x2) {
+			if (y1 > y2) { tmp = y1; y1 = y2; y2 = tmp; }
+			for(int y = y1; y <= y2; y++)
+				plot(x1, y, 1);
+		}
+		else if (y1 == y2) {
+			if (x1 > x2) { tmp = x1; x1 = x2; x2 = tmp; }
+			for(int x = x1; x <= x2; x++)
+				plot(x, y1, 1);
+		}
+		else {
+			if (dx > dy) {
+				if (x1 > x2) {
+					tmp = x1; x1 = x2; x2 = tmp;
+					tmp = y1; y1 = y2; y2 = tmp;
+				}
+				dy = y2 - y1;
+				for(int x = x1; x <= x2; x++) {
+					plot(x, y1 + (x - x1) * dy/dx, 1);
+				}
+			}
+			else {
+				if (y1 > y2) {
+					tmp = x1; x1 = x2; x2 = tmp;
+					tmp = y1; y1 = y2; y2 = tmp;
+				}
+				dx = x2 - x1;
+				for(int y = y1; y <= y2; y++) {
+					plot(x1 + (y - y1) * dx/dy, y, 1);
+				}
+			}
+		}
+
+		pointX = toX;
+		pointY = toY;
+	}
+
+	private boolean coloredCharset = false;
+
+	public void setColoredCharset(boolean value) {
+		this.coloredCharset = value;
+	}
+
+	public boolean isColoredCharset() {
+		return this.coloredCharset;
 	}
 
 }

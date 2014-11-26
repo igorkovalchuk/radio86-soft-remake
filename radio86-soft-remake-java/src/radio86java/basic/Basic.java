@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import radio86java.Radio86rk;
+import radio86java.InterpreterInterface;
 
 /**
  * N = 5
@@ -14,7 +15,7 @@ import radio86java.Radio86rk;
  * PRINT
  * 
  */
-public class Basic {
+public class Basic implements InterpreterInterface {
 
 	public /* static */ void main(String[] argv) {
 
@@ -27,6 +28,7 @@ public class Basic {
 		b.run(text, null);
 	}
 
+	@Override
 	public void run(String listing, Radio86rk screen) {
 		Basic1 b1 = new Basic1();
 		BasicStructure1 s1 = b1.parse(listing);
