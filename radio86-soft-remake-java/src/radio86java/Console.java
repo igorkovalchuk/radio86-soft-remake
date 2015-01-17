@@ -64,7 +64,7 @@ public class Console {
 	public void print(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			print(c, true);
+			print(c, false);
 		}
 	}
 
@@ -111,7 +111,8 @@ public class Console {
 				} else if (k == KeyEvent.VK_DOWN) {
 					lf(false);
 				} else if (k == KeyEvent.VK_RIGHT) {
-					move(false);
+					move1(false);
+					move2(false);
 				} else if (k == KeyEvent.VK_LEFT) {
 					moveLeft(false);
 				}
@@ -179,15 +180,15 @@ public class Console {
 			// возврат каретки;
 			cr();
 		} else {
+			move1(fixed);
 			if (inScreen(cursorX, cursorY))
 				screen[cursorY][cursorX] = Charset.converse(c);
-			move(fixed);
+			move2(fixed);
 		}
 	}
 
 	// move cursor
-	private void move(boolean fixed) {
-		cursorX++;
+	private void move1(boolean fixed) {
 		if (cursorX > lastX) {
 			if (fixed) {
 				cursorX = lastX;
@@ -196,6 +197,11 @@ public class Console {
 				lf(false);
 			}
 		}
+	}
+
+	// move cursor
+	private void move2(boolean fixed) {
+		cursorX++;
 	}
 
 	private void moveLeft(boolean fixed) {
@@ -314,7 +320,7 @@ public class Console {
 
 	public void plot(int x, int y, int z) {
 		
-		System.out.println("plot " + x + " " + y + " " + z);
+		//System.out.println("plot " + x + " " + y + " " + z);
 		
 		pointX = x;
 		pointY = y;
