@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -17,10 +15,15 @@ public class Monitor extends JPanel {
 	private Charset charset = new Charset();
 	private Console console = new Console();
 
+	private int pixelsX = 8 + 1;
+	private int pixelsY = 8 + 1;
+
+	private boolean freezeJPanel = false;
+
 	public void init() {
 
 		setBackground(Color.BLACK);
-		Dimension d = new Dimension(console.getMaxX() * 8, console.getMaxY() * 8);
+		Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
 		setMaximumSize(d);
 		setMinimumSize(d);
 		setPreferredSize(d);
@@ -49,8 +52,19 @@ public class Monitor extends JPanel {
 		this.partial = value;
 	}
 
+	public boolean isFreezeJPanel() {
+		return freezeJPanel;
+	}
+
+	public void setFreezeJPanel(boolean freezeJPanel) {
+		this.freezeJPanel = freezeJPanel;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
+
+		if (freezeJPanel)
+			return;
 
 		if (((System.currentTimeMillis()) - t1) < 500) {
 			return;
@@ -66,16 +80,19 @@ public class Monitor extends JPanel {
 		g2d.setColor(Color.YELLOW);
 		int x = console.getCursorX();
 		int y = console.getCursorY();
+		drawCursor(g2d, x, y);
+		//System.out.println("paint: " + System.currentTimeMillis());
+	}
+
+	private void drawCursor(Graphics2D g2d, int x, int y) {
 		if (console.getDirectionUp() > 0) {
 			y = (console.getMaxY() - 1 - console.getCursorY());
 		}
 		if (x >= 0 && x < console.getMaxX() && y >= 0 && y < console.getMaxY()) {
-			x = x * 8;
-			y = y * 8 + 8;
-			g2d.drawLine(x, y, x + 8, y);
+			x = x * pixelsX;
+			y = y * pixelsY + pixelsY;
+			g2d.drawLine(x, y, x + pixelsX, y);
 		}
-
-		//System.out.println("paint: " + System.currentTimeMillis());
 	}
 
 	private void fullRepaint(Graphics2D g2d) {
@@ -137,7 +154,7 @@ public class Monitor extends JPanel {
 			imageIcon = new ImageIcon(bi);
 		}
 
-		g2d.drawImage(imageIcon.getImage(), screenX * 8, screenY * 8, this);
+		g2d.drawImage(imageIcon.getImage(), screenX * pixelsX, screenY * pixelsY, this);
 	}
 
 }
