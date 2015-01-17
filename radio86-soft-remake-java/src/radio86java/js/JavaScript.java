@@ -41,6 +41,14 @@ public class JavaScript implements InterpreterInterface {
 				"this.CUR = r86.cur;" +
 				"this.tab = r86.tab;" +
 				"this.TAB = r86.tab;" +
+				"this.cr = r86.cr;" +
+				"this.CR = r86.cr;" +
+				"this.lf = r86.lf;" +
+				"this.LF = r86.lf;" +
+				"this.crlf = r86.crlf;" +
+				"this.CRLF = r86.crlf;" +
+				"this.freeze = r86.freeze;" + // additional function;
+				"this.unfreeze = r86.unfreeze;" + // additional function;
 				"this.spc = r86.spc;" +
 				"this.SPC = r86.spc;" +
 				"this.cls = r86.cls;" +
@@ -48,7 +56,11 @@ public class JavaScript implements InterpreterInterface {
 				"this.plot = r86.plot;" +
 				"this.PLOT = r86.plot;" +
 				"this.line = r86.line;" +
-				"this.LINE = r86.line;";
+				"this.LINE = r86.line;" +
+				"this.circle = r86.circle;" + // additional function;
+				"this.cos = Math.cos;" +
+				"this.sin = Math.sin;"
+				;
 
 		try {
 			Object result = engine.eval(functions + listing);

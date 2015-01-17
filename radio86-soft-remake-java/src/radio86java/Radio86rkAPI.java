@@ -53,11 +53,51 @@ public class Radio86rkAPI {
 		}
 	}
 
-	public static String SPC(int n) {
+	public static void CR() {
+		cr();
+	}
+
+	public static void cr() {
+		print("\r");
+	}
+
+	public static void LF() {
+		lf();
+	}
+
+	public static void lf() {
+		print("\n");
+	}
+
+	public static void CRLF() {
+		crlf();
+	}
+
+	public static void crlf() {
+		print("\r\n");
+	}
+
+	public static void freeze() {
+		if (instance != null && instance.screen != null) {
+			instance.screen.getCanvas().setFreezeJPanel(true);
+			instance.screen.setFreeze(true);
+		}
+	}
+
+	public static void unfreeze() {
+		if (instance != null && instance.screen != null) {
+			instance.screen.setFreeze(false);
+			instance.screen.getCanvas().setFreezeJPanel(false);
+			instance.screen.updateScreen();
+		}
+	}
+
+	public static String SPC(double n) {
 		return spc(n);
 	}
 
-	public static String spc(int n) {
+	public static String spc(double nn) {
+		int n = toInt(nn);
 		if (n <= 0)
 			return "";
 		char[] c = new char[n];
@@ -65,23 +105,23 @@ public class Radio86rkAPI {
 		return String.valueOf(c);
 	}
 
-	public static void CUR(int x, int y) {
+	public static void CUR(double x, double y) {
 		cur(x, y);
 	}
 
-	public static void cur(int x, int y) {
+	public static void cur(double x, double y) {
 		//System.out.println("CUR " + x + " " + y);
 		if (instance != null && instance.screen != null)
-			instance.screen.getConsole().point(x, y);
+			instance.screen.getConsole().point(toInt(x), toInt(y));
 	}
 
-	public static void TAB(int x) {
+	public static void TAB(double x) {
 		tab(x);
 	}
 
-	public static void tab(int x) {
+	public static void tab(double x) {
 		if (instance != null && instance.screen != null)
-			instance.screen.getConsole().tab(x);
+			instance.screen.getConsole().tab(toInt(x));
 	}
 
 	public static void CLS() {
@@ -96,14 +136,38 @@ public class Radio86rkAPI {
 		}
 	}
 
-	public static void PLOT(int x, int y, int z) {
+	public static void PLOT(double x, double y, int z) {
 		plot(x, y, z);
 	}
 
-	public static void plot(int x, int y, int z) {
+	public static void plot(double x, double y, int z) {
 		//System.out.println("PLOT " + x + " " + y + " " + z);
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().plot(x, y, z);
+			instance.screen.getConsole().plot(toInt(x), toInt(y), z);
+			instance.screen.updateScreen();
+		}
+	}
+
+	// arc in degrees;
+	public static void arcD(double x, double y, double r, double a1, double a2) {
+		if (instance != null && instance.screen != null) {
+			Console c = instance.screen.getConsole();
+			for (double i = a1 * Math.PI; i <= a2 * Math.PI; i += 0.03) {
+				c.plot(
+					(int)Math.rint(x + Math.cos(i) * r),
+					(int)Math.rint(y + Math.sin(i) * r), 1);
+			}
+			instance.screen.updateScreen();
+		}
+	}
+
+	public static void circle(double x, double y, double r) {
+		if (instance != null && instance.screen != null) {
+			Console c = instance.screen.getConsole();
+			for (double i = 0; i <= 2 * Math.PI; i += 0.03) {
+				c.plot((int)Math.rint(x + Math.cos(i) * r),
+					(int)Math.rint(y + Math.sin(i) * r), 1);
+			}
 			instance.screen.updateScreen();
 		}
 	}
@@ -213,27 +277,34 @@ public class Radio86rkAPI {
 		return String.valueOf(c);
 	}
 
-	public String SCREEN(int x, int y) {
+	public String SCREEN(double x, double y) {
 		return screen(x, y);
 	}
 
-	public String screen(int x, int y) {
+	public String screen(double x, double y) {
 		String value = "";
 		if (instance != null && instance.screen != null) {
-			value = String.valueOf(instance.screen.getConsole().get(x, y));
+			value = String.valueOf(instance.screen.getConsole().get(toInt(x), toInt(y)));
 		}
 		return value;
 	}
 
-	public static void LINE(int x, int y) {
+	public static void LINE(double x, double y) {
 		line(x, y);
 	}
 
-	public static void line(int x, int y) {
+	public static void line(double x, double y) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().line(x, y);
+			instance.screen.getConsole().line(toInt(x), toInt(y));
 			instance.screen.updateScreen();
 		}
+	}
+
+	private static int toInt(double x) {
+		if (x >= 0) {
+			return (int)(x + 0.5);
+		}
+		return (int)(x - 0.5);
 	}
 
 }

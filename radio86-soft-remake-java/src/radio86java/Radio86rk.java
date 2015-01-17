@@ -6,10 +6,10 @@ package radio86java;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.GroupLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JEditorPane;
 import javax.swing.SwingUtilities;
-import radio86java.basic.Basic;
 
 /**
  *
@@ -17,6 +17,8 @@ import radio86java.basic.Basic;
  */
 public class Radio86rk extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
+
+	private boolean freeze = false;
 
 	/**
 	 * Creates new form Radio86rk
@@ -82,7 +84,7 @@ public class Radio86rk extends javax.swing.JFrame {
 				if (true) {
 					Console c = canvas.getConsole();
 					for(int r = 3; r < 25; r+=4)
-						circle(c, r);
+						circle(c, 75, 25, r);
 				}
 				canvas.setPartialRepaint(true);
 				canvas.repaint();
@@ -97,15 +99,25 @@ public class Radio86rk extends javax.swing.JFrame {
 	}
 
 	public void updateScreen() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Console c = canvas.getConsole();
-				canvas.setPartialRepaint(true);
-				canvas.repaint();
-				canvas.setPartialRepaint(false);
-			}
-		});
+		if (!freeze) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					Console c = canvas.getConsole();
+					canvas.setPartialRepaint(true);
+					canvas.repaint();
+					canvas.setPartialRepaint(false);
+				}
+			});
+		}
+	}
+
+	public boolean isFreeze() {
+		return freeze;
+	}
+
+	public void setFreeze(boolean freeze) {
+		this.freeze = freeze;
 	}
 
 	public Console getConsole() {
@@ -116,9 +128,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		return canvas;
 	}
 
-	private void circle(Console c, double r) {
-		double rx = 75;
-		double ry = 25;
+	private void circle(Console c, double rx, double ry, double r) {
 		for (double i = 0; i <= 2 * Math.PI; i += 0.03) {
 			c.plot(
 					(int)Math.rint(rx + Math.cos(i) * r),
@@ -148,6 +158,7 @@ public class Radio86rk extends javax.swing.JFrame {
         runMenu = new javax.swing.JMenu();
         runMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItemStop = new javax.swing.JMenuItem();
         jCheckBoxMenuItemColoredCharset = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -209,6 +220,15 @@ public class Radio86rk extends javax.swing.JFrame {
         });
         runMenu.add(jMenuItem1);
 
+        jMenuItemStop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+        jMenuItemStop.setText("Stop");
+        jMenuItemStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemStopActionPerformed(evt);
+            }
+        });
+        runMenu.add(jMenuItemStop);
+
         jCheckBoxMenuItemColoredCharset.setText("Colored charset");
         jCheckBoxMenuItemColoredCharset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,6 +272,8 @@ public class Radio86rk extends javax.swing.JFrame {
 		System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+	private ThreadGroup tg = null;
+
 	private void runMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMenuItemActionPerformed
 		String listing = jEditorPane.getText();
 		listing += " "; // TODO fix it
@@ -261,8 +283,10 @@ public class Radio86rk extends javax.swing.JFrame {
 		canvas.requestFocus();
 		final String listing1 = listing;
 
-		// Do these things in the non-UI thread;
-		Thread thread = new Thread(new Runnable() {
+		stop();
+		tg = new ThreadGroup ("rk js thread group");
+
+		Thread thread = new Thread (tg, new Runnable() {
 			@Override
 			public void run() {
 				InterpreterInterface interp = InterpreterFactory.create(InterpreterFactory.Language.JS);
@@ -288,6 +312,30 @@ public class Radio86rk extends javax.swing.JFrame {
 			console.setColoredCharset(false);
 		}
     }//GEN-LAST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
+
+    private void jMenuItemStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemStopActionPerformed
+		stop();
+    }//GEN-LAST:event_jMenuItemStopActionPerformed
+
+	private void stop() {
+		ThreadGroup tg1 = this.tg;
+		this.tg = null;
+        if (tg1 != null) {
+			//System.out.println("Attempt to stop the application...");
+			if (tg1.activeCount() > 0) {
+				System.out.println("Attempt to stop the application... ");
+				tg1.stop();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+				}
+				tg1.destroy();
+			}
+			else {
+				//System.out.println("We don't need to stop the application...");
+			}
+		}
+	}
 
 	/**
 	 * @param args the command line arguments
@@ -342,6 +390,7 @@ public class Radio86rk extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemColoredCharset;
     private javax.swing.JEditorPane jEditorPane;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItemStop;
     private javax.swing.JScrollPane jScrollPaneBasic;
     private javax.swing.JScrollPane jScrollPaneConsole;
     private javax.swing.JTabbedPane jTabbedPane;
