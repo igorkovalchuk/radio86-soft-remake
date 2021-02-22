@@ -3,14 +3,14 @@ package radio86java;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.LinkedList;
-import javax.swing.SwingUtilities;
+//import javax.swing.SwingUtilities;
 
 public class Console {
 
-	private int maxX = 64; // 64
-	private int maxY = 25; // 25
-	private int lastX = maxX - 1;
-	private int lastY = maxY - 1;
+	private static final int maxX = 64; // 64
+	private static final int maxY = 25; // 25
+	public static final int lastX = maxX - 1;
+	public static final int lastY = maxY - 1;
 	private char[][] screen = new char[maxY][maxX];
 
 	private int cursorX = 0;

@@ -35,9 +35,9 @@ public class Radio86rkAPI {
 		print(string);
 	}
 
-	public void print(String string) {
+	public void print(Object message) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().print(string);
+			instance.screen.getConsole().print(String.valueOf(message));
 			instance.screen.updateScreen();
 		}
 	}
@@ -46,9 +46,9 @@ public class Radio86rkAPI {
 		println(string);
 	}
 
-	public void println(String string) {
+	public void println(Object message) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().println(string);
+			instance.screen.getConsole().println(String.valueOf(message));
 			instance.screen.updateScreen();
 		}
 	}
@@ -132,6 +132,7 @@ public class Radio86rkAPI {
 		//System.out.println("CLS");
 		if (instance != null && instance.screen != null) {
 			instance.screen.getConsole().cls();
+			cur(0, Console.lastY);
 			instance.screen.updateScreen();
 		}
 	}
