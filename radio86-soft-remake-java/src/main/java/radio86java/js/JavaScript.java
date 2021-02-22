@@ -24,46 +24,45 @@ public class JavaScript implements InterpreterInterface {
 		manager.setBindings(b);
 		ScriptEngine engine = manager.getEngineByName("javascript");
 
-		String functions = 
-				"this.inkey = r86.inkey;" +
-				"this.INKEY = r86.inkey;" +
-				"this.pause = r86.pause;" +
-				"this.PAUSE = r86.pause;" +
-				"this.input = r86.input;" +
-				"this.INPUT = r86.input;" +
-				"this.screen = r86.screen;" +
-				"this.SCREEN = r86.screen;" +
-				"this.print = r86.print;" +
-				"this.PRINT = r86.print;" +
-				"this.println = r86.println;" +
-				"this.PRINTLN = r86.println;" +
-				"this.cur = r86.cur;" +
-				"this.CUR = r86.cur;" +
-				"this.tab = r86.tab;" +
-				"this.TAB = r86.tab;" +
-				"this.cr = r86.cr;" +
-				"this.CR = r86.cr;" +
-				"this.lf = r86.lf;" +
-				"this.LF = r86.lf;" +
-				"this.crlf = r86.crlf;" +
-				"this.CRLF = r86.crlf;" +
-				"this.freeze = r86.freeze;" + // additional function;
-				"this.unfreeze = r86.unfreeze;" + // additional function;
-				"this.spc = r86.spc;" +
-				"this.SPC = r86.spc;" +
-				"this.cls = r86.cls;" +
-				"this.CLS = r86.cls;" +
-				"this.plot = r86.plot;" +
-				"this.PLOT = r86.plot;" +
-				"this.line = r86.line;" +
-				"this.LINE = r86.line;" +
-				"this.circle = r86.circle;" + // additional function;
-				"this.cos = Math.cos;" +
-				"this.sin = Math.sin;"
-				;
+                String[] builtinFunctions1 = new String[] {
+                    "pause(seconds)",
+                    "print(message)",
+                    "println(message)",
+                    "cur(x, y)",
+                    "tab(n)",
+                    "cr()",
+                    "lf()",
+                    "crlf()",
+                    "freeze()", // additional function;
+                    "unfreeze()", // additional function;
+                    "spc(n)",
+                    "cls()",
+                    "plot(x, y, z)",
+                    "line(x, y)",
+                    "circle(x, y, r)" // additional function;
+                };
+
+                String[] builtinFunctions2 = new String[] {
+                    "function inkey(mode) { return r86.inkey(mode); }",
+                    "function input(message) { return r86.input(message); }",
+                    "function screen(x, y) { return r86.screen(x, y); }",
+                    "function cos(a) { return Math.cos(a); }",
+                    "function sin(a) { return Math.sin(a); }"
+                };
+
+                StringBuilder functions = new StringBuilder();
+
+                for(String f : builtinFunctions1) {
+                    functions.append("function ").append(f)
+                            .append(" { r86.").append(f).append("; }\n");
+                }
+
+                for(String f : builtinFunctions2) {
+                    functions.append(f).append("\n");
+                }
 
 		try {
-			Object result = engine.eval(functions + listing);
+			Object result = engine.eval(functions.toString() + listing);
 			System.out.println("Result of ScriptEngine.eval(): " + result);
 		}
 		catch(ScriptException ex) {
