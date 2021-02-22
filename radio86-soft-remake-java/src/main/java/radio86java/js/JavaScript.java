@@ -1,10 +1,12 @@
 package radio86java.js;
 
-import java.util.HashMap;
+import java.util.List;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.script.SimpleBindings;
 import radio86java.InterpreterInterface;
 import radio86java.Radio86rk;
 import radio86java.Radio86rkAPI;
@@ -13,16 +15,19 @@ public class JavaScript implements InterpreterInterface {
 
 	@Override
 	public void run(String listing, Radio86rk screen) {
-		//Radio86rkAPI api = new Radio86rkAPI(screen);
+
 		screen.getConsole().setInteractive(false);
+
 		Radio86rkAPI api = Radio86rkAPI.initializeInstance(screen);
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("R86", api);
-		m.put("r86", api);
-		SimpleBindings b = new SimpleBindings(m);
+
 		ScriptEngineManager manager = new ScriptEngineManager();
-		manager.setBindings(b);
-		ScriptEngine engine = manager.getEngineByName("javascript");
+
+                ScriptEngine engine = manager.getEngineByName("graal.js");
+
+                Bindings bindings = engine.createBindings();
+                bindings.put("polyglot.js.allowHostAccess", true);
+                bindings.put("r86", api);
+                engine.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
 
                 String[] builtinFunctions1 = new String[] {
                     "pause(seconds)",
@@ -70,4 +75,11 @@ public class JavaScript implements InterpreterInterface {
 		}
 	}
 
+        private void printEngines() {
+                List<ScriptEngineFactory> engines = (new ScriptEngineManager()).getEngineFactories();
+                for (ScriptEngineFactory f: engines) {
+                    System.out.println(f.getLanguageName() + " "
+                            + f.getEngineName() + " " + f.getNames().toString());
+                }
+        }
 }

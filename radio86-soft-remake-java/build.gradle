@@ -10,5 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation         'org.graalvm.js:js:20.3.0'
+    implementation         'org.graalvm.js:js-scriptengine:20.3.0'
     testImplementation     'junit:junit:4.13'
 }
