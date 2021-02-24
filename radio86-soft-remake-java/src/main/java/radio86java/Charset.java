@@ -12,6 +12,8 @@ public class Charset {
 	
 	private Map<Integer, BufferedImage> map1 = new HashMap<Integer, BufferedImage>();
 	private Map<Integer, ImageIcon> map2 = new HashMap<Integer, ImageIcon>();
+	private Map<Integer, BufferedImage> bufferedImageMap16x16 = new HashMap<Integer, BufferedImage>();
+	private Map<Integer, ImageIcon> imageIconMap16x16 = new HashMap<Integer, ImageIcon>();
 
 	private static boolean testing = false;
 
@@ -68,6 +70,14 @@ public class Charset {
 		return map1.get(index);
 	}
 
+	public ImageIcon getImageIcon16(Integer index) {
+		return imageIconMap16x16.get(index);
+	}
+
+	public BufferedImage getBufferedImage16(Integer index) {
+		return bufferedImageMap16x16.get(index);
+	}
+
 	public void output(int index) {
 		BufferedImage bi = map1.get(index);
 		if (bi == null)
@@ -119,6 +129,26 @@ public class Charset {
 							System.out.println(" ");
 					}
 				}
+
+				BufferedImage bi16 = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
+
+				if (true) {
+					int color;
+					int targetY = 0;
+					int targetX = 0;
+					for (int sourceY = 0; sourceY < 8; sourceY++) {
+						targetY = sourceY * 2;
+						for (int sourceX = 0; sourceX < 8; sourceX++) {
+							color = bi23.getRGB(sourceX, sourceY);
+							targetX = sourceX * 2;
+							bi16.setRGB(targetX, targetY, color);
+							bi16.setRGB(targetX + 1, targetY, color);
+							bi16.setRGB(targetX, targetY + 1, color);
+							bi16.setRGB(targetX + 1, targetY + 1, color);
+						}
+					}
+				}
+
 				if (testing)
 					System.out.println("2)-------------");
 				
@@ -128,7 +158,12 @@ public class Charset {
 				
 				ImageIcon ii2 = new ImageIcon(bi2);
 				map2.put(i, ii2);
-				
+
+				bufferedImageMap16x16.put(i, bi16);
+
+				ImageIcon ii16 = new ImageIcon(bi16);
+				imageIconMap16x16.put(i, ii16);
+
 				if (testing)
 					System.out.println("read: " + i);
 			}

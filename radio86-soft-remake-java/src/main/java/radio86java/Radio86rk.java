@@ -20,15 +20,17 @@ public class Radio86rk extends javax.swing.JFrame {
 
 	private boolean freeze = false;
 
+	private Console console = new Console();
+
 	/**
 	 * Creates new form Radio86rk
 	 */
 	public Radio86rk() {
 		initComponents();
 		this.setLocationByPlatform(true);
-		
-		canvas = new Monitor();
-		
+
+		canvas = new Monitor(console, 2, 1);
+
 		jScrollPaneConsole.setViewportView(canvas);
 		
 		/*

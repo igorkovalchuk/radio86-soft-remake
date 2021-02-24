@@ -13,12 +13,27 @@ public class Monitor extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
-	private Console console = new Console();
 
-	private int pixelsX = 8 + 1;
-	private int pixelsY = 8 + 1;
+	private final Console console;
+
+	private final int multiplier;
+
+	private final int pixelsX;
+	private final int pixelsY;
 
 	private boolean freezeJPanel = false;
+
+	/**
+	 * @param console
+	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
+	 * @param space some space around chars
+	 */
+	public Monitor(Console console, int multiplier, int space) {
+		this.console = console;
+		this.multiplier = multiplier;
+		this.pixelsX = 8 * multiplier + space;
+		this.pixelsY = 8 * multiplier + space;
+	}
 
 	public void init() {
 
@@ -137,12 +152,22 @@ public class Monitor extends JPanel {
 		if (((int)c == 32) || ((int)c == 0))
 			return;
 
-		imageIcon = charset.getImageIcon((int) c);
+		if (multiplier == 1) {
+			imageIcon = charset.getImageIcon((int) c);
+		} else {
+			imageIcon = charset.getImageIcon16((int) c);
+		}
+
 		if (imageIcon == null)
 			return;
 
 		if (console.isColoredCharset()) {  
-			bi = charset.getBufferedImage((int) c);
+			if (multiplier == 1) {
+				bi = charset.getBufferedImage((int) c);
+			} else {
+				bi = charset.getBufferedImage16((int) c);
+			}
+
 			for (int xx = 0; xx < bi.getWidth(); xx++) {
 				for (int yy = 0; yy < bi.getHeight(); yy++) {
 					int rgb = bi.getRGB(xx, yy);

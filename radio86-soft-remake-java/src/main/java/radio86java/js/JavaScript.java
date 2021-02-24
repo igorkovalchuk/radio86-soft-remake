@@ -44,7 +44,9 @@ public class JavaScript implements InterpreterInterface {
                     "cls()",
                     "plot(x, y, z)",
                     "line(x, y)",
-                    "circle(x, y, r)" // additional function;
+                    "circle(x, y, r)", // additional function;
+                    "poke(addr, value)",
+                    "log(message)",
                 };
 
                 String[] builtinFunctions2 = new String[] {
@@ -52,7 +54,10 @@ public class JavaScript implements InterpreterInterface {
                     "function input(message) { return r86.input(message); }",
                     "function screen(x, y) { return r86.screen(x, y); }",
                     "function cos(a) { return Math.cos(a); }",
-                    "function sin(a) { return Math.sin(a); }"
+                    "function sin(a) { return Math.sin(a); }",
+                    "function peek(addr) { return r86.peek(addr); }",
+                    "function chr(value) { return r86.chr(value); }",
+                    "function asc(ch) { return r86.asc(ch); }",
                 };
 
                 StringBuilder functions = new StringBuilder();

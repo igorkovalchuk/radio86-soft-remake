@@ -1,41 +1,64 @@
 package radio86java;
 
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.LinkedList;
-//import javax.swing.SwingUtilities;
 
 public class Console {
 
-	private static final int maxX = 64; // 64
-	private static final int maxY = 25; // 25
-	public static final int lastX = maxX - 1;
-	public static final int lastY = maxY - 1;
+	private final int maxX = 64; // 64
+	private final int maxY = 25; // 25
+	private final int lastX = maxX - 1;
+	private final int lastY = maxY - 1;
 	private char[][] screen = new char[maxY][maxX];
+
+	private Memory memory = new Memory();
 
 	private int cursorX = 0;
 	private int cursorY = 0;
 
 	// In this place we define a coordinate system type;
 	// 1 => 0 at bottom, 24 at top; 0 => 0 at top, 24 at bottom;
-	private int directionUp = 1; // 0 or 1; default is 1;
+	private final int directionUp = 1; // 0 or 1; default is 1;
 
 	public Console() {
 		cls();
 		pointUpLeft();
 	}
 
+	private void modifyYX(int y, int x, char c) {
+		screen[y][x] = c;
+		if (directionUp == 1) {
+			y = lastY - y;
+		}
+		memory.poke(memory.getAddr(y, x), c);
+	}
+
+	public void poke(int addr, int value) {
+		memory.poke(addr, value);
+		int[] yx = memory.getYX(addr);
+		if (yx[0] != Memory.UNKNOWN_COORD) {
+			if (directionUp == 1) {
+				yx[0] = lastY - yx[0];
+			}
+			screen[yx[0]][yx[1]] = (char) value;
+		}
+	}
+
+	public int peek(int addr) {
+		return memory.peek(addr);
+	}
+
 	public int getDirectionUp() {
 		return directionUp;
 	}
 
-	private void pointUpLeft() {
+	public final void pointUpLeft() {
 		point(0, lastY);
 	}
 
-	public char[][] getScreenCopy() {
-		return Arrays.copyOf(screen, screen.length);
-	}
+	//public char[][] getScreenCopy() {
+		//return Arrays.copyOf(screen, screen.length);
+	//}
 
 	public int getMaxX() {
 		return maxX;
@@ -53,10 +76,10 @@ public class Console {
 		return cursorY;
 	}
 
-	public void cls() {
+	public final void cls() {
 		for (int y = 0; y < maxY; y++) {
 			for (int x = 0; x < maxX; x++) {
-				screen[y][x] = ' ';
+				modifyYX(y, x, ' ');
 			}
 		}
 	}
@@ -182,7 +205,7 @@ public class Console {
 		} else {
 			move1(fixed);
 			if (inScreen(cursorX, cursorY))
-				screen[cursorY][cursorX] = Charset.converse(c);
+				modifyYX(cursorY, cursorX, Charset.converse(c));
 			move2(fixed);
 		}
 	}
@@ -261,21 +284,21 @@ public class Console {
 		if (directionUp > 0) {
 			for (int y = lastY; y > 0; y--) {
 				for (int x = 0; x < maxX; x++) {
-					screen[y][x] = screen[y - 1][x];
+					modifyYX(y, x, getYX(y - 1, x));
 				}
 			}
 			for (int x = 0; x < maxX; x++) {
-				screen[0][x] = ' ';
+				modifyYX(0, x, ' ');
 			}
 		}
 		else {
 			for (int y = 0; y < lastY; y++) {
 				for (int x = 0; x < maxX; x++) {
-					screen[y][x] = screen[y + 1][x];
+					modifyYX(y, x, getYX(y + 1, x));
 				}
 			}
 			for (int x = 0; x < maxX; x++) {
-				screen[lastY][x] = ' ';
+				modifyYX(lastY, x, ' ');
 			}
 		}
 	}
@@ -284,6 +307,10 @@ public class Console {
 		if (inScreen(x,y))
 			return screen[y][x];
 		return 0;
+	}
+
+	private char getYX(int y, int x) {
+		return screen[y][x];
 	}
 
 	public void set(int x, int y, char c) {

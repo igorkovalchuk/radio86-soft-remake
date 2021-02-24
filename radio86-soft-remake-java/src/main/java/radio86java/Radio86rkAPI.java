@@ -132,7 +132,7 @@ public class Radio86rkAPI {
 		//System.out.println("CLS");
 		if (instance != null && instance.screen != null) {
 			instance.screen.getConsole().cls();
-			cur(0, Console.lastY);
+			instance.screen.getConsole().pointUpLeft();
 			instance.screen.updateScreen();
 		}
 	}
@@ -308,4 +308,28 @@ public class Radio86rkAPI {
 		return (int)(x - 0.5);
 	}
 
+	public void poke(int addr, int value) {
+		instance.screen.getConsole().poke(addr, value);
+		// TODO: optimize
+		instance.screen.updateScreen();
+	}
+
+	public int peek(int addr) {
+		return instance.screen.getConsole().peek(addr);
+	}
+
+	public char chr(int value) {
+		return (char) value;
+	}
+
+	public int asc(String value) {
+		if (value.length() == 0) {
+			return 0; // TODO: error
+		}
+		return (int) value.toCharArray()[0];
+	}
+
+	public void log(Object message) {
+		System.out.println("LOG: " + String.valueOf(message));
+	}
 }
