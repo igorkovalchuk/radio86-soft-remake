@@ -132,7 +132,6 @@ public class Radio86rkAPI {
 		//System.out.println("CLS");
 		if (instance != null && instance.screen != null) {
 			instance.screen.getConsole().cls();
-			instance.screen.getConsole().pointUpLeft();
 			instance.screen.updateScreen();
 		}
 	}
