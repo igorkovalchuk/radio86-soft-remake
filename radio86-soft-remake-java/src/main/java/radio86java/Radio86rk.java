@@ -29,7 +29,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		initComponents();
 		this.setLocationByPlatform(true);
 
-		canvas = new Monitor(console, 2, 1);
+		canvas = new Monitor(console, 1, 1);
 
 		jScrollPaneConsole.setViewportView(canvas);
 		

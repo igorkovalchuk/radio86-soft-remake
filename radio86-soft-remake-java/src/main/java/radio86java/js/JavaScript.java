@@ -31,8 +31,6 @@ public class JavaScript implements InterpreterInterface {
 
                 String[] builtinFunctions1 = new String[] {
                     "pause(seconds)",
-                    "print(message)",
-                    "println(message)",
                     "cur(x, y)",
                     "tab(n)",
                     "cr()",
@@ -40,7 +38,6 @@ public class JavaScript implements InterpreterInterface {
                     "crlf()",
                     "freeze()", // additional function;
                     "unfreeze()", // additional function;
-                    "spc(n)",
                     "cls()",
                     "plot(x, y, z)",
                     "line(x, y)",
@@ -50,6 +47,8 @@ public class JavaScript implements InterpreterInterface {
                 };
 
                 String[] builtinFunctions2 = new String[] {
+                    "function print(message) { if (message === undefined) { return; } else { r86.print(message); } }",
+                    "function println(message) { if (message === undefined) { r86.crlf(); } else { r86.println(message); } }",
                     "function inkey(mode) { return r86.inkey(mode); }",
                     "function input(message) { return r86.input(message); }",
                     "function screen(x, y) { return r86.screen(x, y); }",
@@ -58,6 +57,7 @@ public class JavaScript implements InterpreterInterface {
                     "function peek(addr) { return r86.peek(addr); }",
                     "function chr(value) { return r86.chr(value); }",
                     "function asc(ch) { return r86.asc(ch); }",
+                    "function spc(n) { return r86.spc(n); }",
                 };
 
                 StringBuilder functions = new StringBuilder();

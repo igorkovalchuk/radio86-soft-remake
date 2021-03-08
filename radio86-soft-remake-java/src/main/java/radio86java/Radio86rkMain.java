@@ -12,7 +12,9 @@ public class Radio86rkMain {
 
         StringBuilder listing = new StringBuilder();
 
-        InputStream is = Class.class.getResourceAsStream("/radio86java/samples/tv_tbl.js");
+        //String name = "/radio86java/samples/tv_tbl.js";
+        String name = "/radio86java/samples/ohota_na_lis.js";
+        InputStream is = Class.class.getResourceAsStream(name);
         if (is == null)
             throw new RuntimeException("Samples InputStream == null");
 

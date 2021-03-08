@@ -187,7 +187,7 @@ public class Radio86rkAPI {
 				// to read an input String from user;	
 			//}
 		}
-		print(message + " " + value);
+		println(message + " " + value);
 		return value;
 	}
 
@@ -273,7 +273,10 @@ public class Radio86rkAPI {
 			} else {
 				return "";
 			}
+		} else if (k == KeyEvent.VK_ESCAPE) {
+			return "esc";
 		}
+
 		return String.valueOf(c);
 	}
 
