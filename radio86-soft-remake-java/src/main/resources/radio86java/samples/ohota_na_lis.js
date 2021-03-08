@@ -120,6 +120,7 @@ function initialize() {
     inkey(0);
 
     cur(0, 2);
+    // в оригинале нет этой инструкции
     println("[С]ЕВЕР " + chr(11) + ", [Ю]Г " + chr(15) + ", [В]ОСТОК " + chr(14) + ", [З]АПАД " + chr(29) + ", ПРОБЕЛ, ESC");
 }
 
@@ -192,6 +193,8 @@ function nextIteration() {
         if (xf[i] !== xh || yf[i] !== yh) {
             continue;
         }
+        // в оригинале IF (DX OR DY)<>0 AND RND(1)<0.5
+        // лису, если двигаешься, можно найти не всегда, можно пробежать мимо
         if ((dx !== 0 || dy !== 0) && Math.random() < 0.5) {
             continue;
         }
