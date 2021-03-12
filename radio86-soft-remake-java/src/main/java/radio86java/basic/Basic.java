@@ -1,10 +1,10 @@
 package radio86java.basic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import radio86java.Radio86rk;
 import radio86java.InterpreterInterface;
+import radio86java.Listing;
 
 /**
  * N = 5
@@ -25,13 +25,13 @@ public class Basic implements InterpreterInterface {
 			"30 PRINT (X+Y)";
 
 		Basic b = new Basic();
-		b.run(text, null);
+		b.run(new Listing(text), null);
 	}
 
 	@Override
-	public void run(String listing, Radio86rk screen) {
+	public void run(Listing listing, Radio86rk screen) {
 		Basic1 b1 = new Basic1();
-		BasicStructure1 s1 = b1.parse(listing);
+		BasicStructure1 s1 = b1.parse(listing.getText());
 		//s1.print();
 
 		Basic2 b2 = new Basic2();

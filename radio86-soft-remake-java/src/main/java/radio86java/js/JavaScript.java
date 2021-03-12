@@ -8,13 +8,14 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import radio86java.InterpreterInterface;
+import radio86java.Listing;
 import radio86java.Radio86rk;
 import radio86java.Radio86rkAPI;
 
 public class JavaScript implements InterpreterInterface {
 
 	@Override
-	public void run(String listing, Radio86rk screen) {
+	public void run(Listing listing, Radio86rk screen) {
 
 		screen.getConsole().setInteractive(false);
 
@@ -32,10 +33,7 @@ public class JavaScript implements InterpreterInterface {
                 String[] builtinFunctions1 = new String[] {
                     "pause(seconds)",
                     "cur(x, y)",
-                    "tab(n)",
-                    "cr()",
-                    "lf()",
-                    "crlf()",
+                    "printtab(n)",
                     "freeze()", // additional function;
                     "unfreeze()", // additional function;
                     "cls()",
@@ -58,6 +56,7 @@ public class JavaScript implements InterpreterInterface {
                     "function chr(value) { return r86.chr(value); }",
                     "function asc(ch) { return r86.asc(ch); }",
                     "function spc(n) { return r86.spc(n); }",
+                    "function stop() { throw 'STOP!'; }",
                 };
 
                 StringBuilder functions = new StringBuilder();
@@ -72,8 +71,9 @@ public class JavaScript implements InterpreterInterface {
                 }
 
 		try {
-			Object result = engine.eval(functions.toString() + listing);
+			Object result = engine.eval(functions.toString() + listing.getText());
 			System.out.println("Result of ScriptEngine.eval(): " + result);
+			screen.getConsole().setInteractive(true);
 		}
 		catch(ScriptException ex) {
 			ex.printStackTrace();

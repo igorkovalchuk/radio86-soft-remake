@@ -115,11 +115,11 @@ public class Radio86rkAPI {
 			instance.screen.getConsole().point(toInt(x), toInt(y));
 	}
 
-	public void TAB(double x) {
-		tab(x);
+	public void PRINTTAB(double x) {
+		printtab(x);
 	}
 
-	public void tab(double x) {
+	public void printtab(double x) {
 		if (instance != null && instance.screen != null)
 			instance.screen.getConsole().tab(toInt(x));
 	}

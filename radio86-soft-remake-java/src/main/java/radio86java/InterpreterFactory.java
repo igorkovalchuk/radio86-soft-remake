@@ -5,11 +5,6 @@ import radio86java.js.JavaScript;
 
 public class InterpreterFactory {
 
-	public enum Language {
-		BASIC,
-		JS
-	}
-
 	public static InterpreterInterface create(Language language) {
 		if (language == Language.BASIC) {
 			return new Basic();

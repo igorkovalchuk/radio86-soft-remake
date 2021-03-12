@@ -4,7 +4,7 @@
 // ИГРОВАЯ ПРОГРАММА "ОХОТА НА ЛИС"
 // ВЕРСИЯ ДЛЯ "РАДИО-86РК"
 
-cls(); println(); println(); tab(15); println("ОХОТА НА ЛИС"); println(); println();
+cls(); println(); println(); printtab(15); println("ОХОТА НА ЛИС"); println(); println();
 
 var e = 0; // ошибка или нет
 var nm = 9; // максимум для введенного пользователем числа (сколько лис мы можем спрятать)
@@ -84,7 +84,7 @@ function initialize() {
             }
         }
         f[i] = 0;
-        tab(5); println("ЛИCA-" + chr(48 + i) + " - ГОТОВА.");
+        printtab(5); println("ЛИCA-" + chr(48 + i) + " - ГОТОВА.");
         log("Лиса " + i + ", x = " + xf[i] + ", y = " + yf[i]);
         i++;
     } while(i <= nf);
@@ -107,7 +107,7 @@ function initialize() {
     cls(); cur(0, 0);
 
     for(i = 1; i <= 20; i++) {
-        println(); tab(10);
+        println(); printtab(10);
         for(j = 1; j <=50; j++) {
             print(".");
         }
