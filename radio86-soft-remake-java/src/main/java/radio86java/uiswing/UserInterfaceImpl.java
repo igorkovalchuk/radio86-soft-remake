@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package radio86java;
+package radio86java.uiswing;
 
 import radio86java.uiswing.CanvasImpl;
 import java.awt.event.KeyAdapter;
@@ -11,16 +11,20 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
+import radio86java.InterpreterFactory;
+import radio86java.InterpreterInterface;
+import radio86java.Listing;
+import radio86java.TerminalModel;
 import static radio86java.Utils.loadResource;
 
-public class Radio86rk extends javax.swing.JFrame {
+public class UserInterfaceImpl extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private boolean freeze = false;
 
 	private TerminalModel console = new TerminalModel();
 
-	public Radio86rk() {
+	public UserInterfaceImpl() {
 		initComponents();
 		this.setLocationByPlatform(true);
 
@@ -405,7 +409,7 @@ public class Radio86rk extends javax.swing.JFrame {
 			@Override
 			public void run() {
 				InterpreterInterface interp = InterpreterFactory.create(listing1.getLanguage());
-				interp.run(listing1, Radio86rk.this);
+				interp.run(listing1, UserInterfaceImpl.this);
 			}
 		});
 		thread.start();
@@ -556,14 +560,17 @@ public class Radio86rk extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(Radio86rk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(UserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(Radio86rk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(UserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(Radio86rk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(UserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(Radio86rk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(UserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
 		//</editor-fold>
 
 		/*
@@ -572,7 +579,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
-				new Radio86rk().setVisible(true);
+				new UserInterfaceImpl().setVisible(true);
 			}
 		});
 	}

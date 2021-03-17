@@ -1,7 +1,7 @@
 package radio86java;
 
-import radio86java.Radio86rk;
+import radio86java.uiswing.UserInterfaceImpl;
 
 public interface InterpreterInterface {
-	void run(Listing listing, Radio86rk screen);
+	void run(Listing listing, UserInterfaceImpl screen);
 }

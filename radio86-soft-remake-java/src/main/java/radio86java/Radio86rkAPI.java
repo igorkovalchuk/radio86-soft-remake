@@ -1,5 +1,6 @@
 package radio86java;
 
+import radio86java.uiswing.UserInterfaceImpl;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -14,14 +15,14 @@ public class Radio86rkAPI {
 
 	private static Radio86rkAPI instance;
 
-	private final Radio86rk screen;
+	private final UserInterfaceImpl screen;
 
-	public static Radio86rkAPI initializeInstance(Radio86rk screen1) {
+	public static Radio86rkAPI initializeInstance(UserInterfaceImpl screen1) {
 		instance = new Radio86rkAPI(screen1);
 		return instance;
 	}
 
-	public Radio86rkAPI(Radio86rk screen1) {
+	public Radio86rkAPI(UserInterfaceImpl screen1) {
 		screen = screen1;
 	}
 

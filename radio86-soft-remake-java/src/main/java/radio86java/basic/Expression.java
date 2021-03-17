@@ -2,7 +2,7 @@ package radio86java.basic;
 
 import java.util.ArrayList;
 import javax.script.ScriptException;
-import radio86java.Radio86rk;
+import radio86java.uiswing.UserInterfaceImpl;
 import static radio86java.basic.Basic.*;
 
 public class Expression {
@@ -58,7 +58,7 @@ public class Expression {
 
 	}
 
-	public void interpret(Radio86rk screen, BasicVariables variables) throws ScriptException {
+	public void interpret(UserInterfaceImpl screen, BasicVariables variables) throws ScriptException {
 		
 		if(types[0] == TYPE_OPERATOR_PRINT) {
 			String[] parameters = readParameters(1, -1, variables);
