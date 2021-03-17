@@ -15,10 +15,11 @@ public class TerminalView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
+	private boolean previousIsColoredCharset = false;
 
 	private final ComputerModelIntf computerModel;
 
-	private final int multiplier;
+	private final FontSizeMultiplier multiplier;
 
 	private final int pixelsX;
 	private final int pixelsY;
@@ -31,11 +32,11 @@ public class TerminalView extends JPanel {
 	 * @param space some space around chars
 	 */
 	TerminalView(ComputerModelIntf computerModel,
-			FontSizeMultiplier sizeMultiplier, int space) {
+			FontSizeMultiplier multiplier, int space) {
 		this.computerModel = computerModel;
-		this.multiplier = sizeMultiplier.asNumber();
-		this.pixelsX = 8 * multiplier + space;
-		this.pixelsY = 8 * multiplier + space;
+		this.multiplier = multiplier;
+		this.pixelsX = 8 * multiplier.asNumber() + space;
+		this.pixelsY = 8 * multiplier.asNumber() + space;
 	}
 
 	void init() {
@@ -164,7 +165,14 @@ public class TerminalView extends JPanel {
 		if (((int)c == 32) || ((int)c == 0))
 			return;
 
-		if (multiplier == 1) {
+		boolean isColoredCharset = console.isColoredCharset();
+		if (!isColoredCharset && (isColoredCharset != previousIsColoredCharset)) {
+			// reset all characters to white
+			charset.init();
+		}
+		previousIsColoredCharset = isColoredCharset;
+
+		if (multiplier == FontSizeMultiplier.ONE) {
 			imageIcon = charset.getImageIcon((int) c);
 		} else {
 			imageIcon = charset.getImageIcon16((int) c);
@@ -174,7 +182,7 @@ public class TerminalView extends JPanel {
 			return;
 
 		if (console.isColoredCharset()) {  
-			if (multiplier == 1) {
+			if (multiplier == FontSizeMultiplier.ONE) {
 				bi = charset.getBufferedImage((int) c);
 			} else {
 				bi = charset.getBufferedImage16((int) c);
