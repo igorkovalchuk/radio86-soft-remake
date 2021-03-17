@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import radio86java.ComputerModelIntf;
 import radio86java.TerminalModel;
 
-public class CanvasImpl extends JPanel {
+public class TerminalView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
@@ -26,13 +26,14 @@ public class CanvasImpl extends JPanel {
 	private boolean freezeJPanel = false;
 
 	/**
-	 * @param console
+	 * @param computerModel
 	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
 	 * @param space some space around chars
 	 */
-	CanvasImpl(ComputerModelIntf computerModel, int multiplier, int space) {
+	TerminalView(ComputerModelIntf computerModel,
+			FontSizeMultiplier sizeMultiplier, int space) {
 		this.computerModel = computerModel;
-		this.multiplier = multiplier;
+		this.multiplier = sizeMultiplier.asNumber();
 		this.pixelsX = 8 * multiplier + space;
 		this.pixelsY = 8 * multiplier + space;
 	}

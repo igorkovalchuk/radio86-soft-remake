@@ -40,7 +40,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame
 		contentsMenuItem.setEnabled(false);
 		aboutMenuItem.setEnabled(false);
 
-		canvas = new CanvasImpl(getComputerModel(), 1, 1);
+		canvas = new TerminalView(getComputerModel(), FontSizeMultiplier.ONE, 1);
 
 		jScrollPaneConsole.setViewportView(canvas);
 
@@ -123,7 +123,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame
 		}
 	}
 
-	CanvasImpl getCanvas() {
+	TerminalView getCanvas() {
 		return canvas;
 	}
 
@@ -529,7 +529,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame
 		}
 	}
 
-	private CanvasImpl canvas;
+	private TerminalView canvas;
 	
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JMenuItem aboutMenuItem;
