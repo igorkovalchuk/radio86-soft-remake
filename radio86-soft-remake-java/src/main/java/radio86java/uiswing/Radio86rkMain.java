@@ -1,7 +1,5 @@
 package radio86java.uiswing;
 
-//import radio86java.basic.Basic;
-
 import radio86java.ComputerModel;
 import radio86java.ComputerModelIntf;
 
@@ -13,6 +11,8 @@ public class Radio86rkMain {
     ComputerModelIntf computerModel = new ComputerModel();
 
     final UserInterfaceImpl screen = new UserInterfaceImpl(computerModel);
+    screen.setLocationByPlatform(true);
+    screen.setTitle("Симулятор Радио 86РК");
 
     java.awt.EventQueue.invokeLater(() -> {
       screen.setVisible(true);

@@ -7,8 +7,9 @@ public class Listing {
   private final String text;
 
   public Listing(String text) {
-    if (text == null)
+    if (text == null) {
       text = "";
+    }
     this.text = text;
   }
 

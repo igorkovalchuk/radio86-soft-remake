@@ -1,6 +1,5 @@
 package radio86java.uiswing;
 
-//import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,193 +12,176 @@ import radio86java.TerminalModel;
 
 public class TerminalView extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private Charset charset = new Charset();
-	private boolean previousIsColoredCharset = false;
+  private static final long serialVersionUID = 1L;
+  private final Charset charset = new Charset();
+  private boolean previousIsColoredCharset = false;
 
-	private final ComputerModelIntf computerModel;
+  private final ComputerModelIntf computerModel;
 
-	private final FontSizeMultiplier multiplier;
+  private final FontSizeMultiplier multiplier;
 
-	private final int pixelsX;
-	private final int pixelsY;
+  private final int pixelsX;
+  private final int pixelsY;
 
-	private boolean freezeJPanel = false;
+  private boolean freezeJPanel = false;
 
-	/**
-	 * @param computerModel
-	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
-	 * @param space some space around chars
-	 */
-	TerminalView(ComputerModelIntf computerModel,
-			FontSizeMultiplier multiplier, int space) {
-		this.computerModel = computerModel;
-		this.multiplier = multiplier;
-		this.pixelsX = 8 * multiplier.asNumber() + space;
-		this.pixelsY = 8 * multiplier.asNumber() + space;
-	}
+  /**
+   * @param computerModel
+   * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
+   * @param space some space around chars
+   */
+  TerminalView(ComputerModelIntf computerModel,
+          FontSizeMultiplier multiplier, int space) {
+    this.computerModel = computerModel;
+    this.multiplier = multiplier;
+    this.pixelsX = 8 * multiplier.asNumber() + space;
+    this.pixelsY = 8 * multiplier.asNumber() + space;
+  }
 
-	void init() {
+  void init() {
 
-		TerminalModel console = getTerminalModel();
+    TerminalModel console = getTerminalModel();
 
-		setBackground(Color.BLACK);
-		Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
-		setMaximumSize(d);
-		setMinimumSize(d);
-		setPreferredSize(d);
-		setSize(d);
-		charset.init();
+    setBackground(Color.BLACK);
+    Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
+    setMaximumSize(d);
+    setMinimumSize(d);
+    setPreferredSize(d);
+    setSize(d);
+    charset.init();
+  }
 
-		//this.addKeyListener(new KeyAdapter() {
+  private TerminalModel getTerminalModel() {
+    return computerModel.getTerminalModel();
+  }
 
-			//@Override
-			//public void keyPressed(KeyEvent e) {
-				//System.out.println("Pressed: Monitor " + e);
-			//}
-		//});
+  //private boolean partial = false;
 
-	}
+  // TODO: implement partial repaint
+  void setPartialRepaint(boolean value) {
+    //this.partial = value;
+  }
 
-	private TerminalModel getTerminalModel() {
-		return computerModel.getTerminalModel();
-	}
+  boolean isFreezeJPanel() {
+    return freezeJPanel;
+  }
 
-	private static long t1 = 0;
-	
-	private boolean partial = false;
+  void setFreezeJPanel(boolean freezeJPanel) {
+    this.freezeJPanel = freezeJPanel;
+  }
 
-	void setPartialRepaint(boolean value) {
-		this.partial = value;
-	}
+  @Override
+  public void paintComponent(Graphics g) {
 
-	boolean isFreezeJPanel() {
-		return freezeJPanel;
-	}
+    if (freezeJPanel) {
+      return;
+    }
 
-	void setFreezeJPanel(boolean freezeJPanel) {
-		this.freezeJPanel = freezeJPanel;
-	}
+    super.paintComponent(g);
 
-	@Override
-	public void paintComponent(Graphics g) {
+    TerminalModel console = getTerminalModel();
 
-		if (freezeJPanel)
-			return;
+    Graphics2D g2d = (Graphics2D) g;
 
-		if (((System.currentTimeMillis()) - t1) < 500) {
-			return;
-		}
+    fullRepaint(g2d);
 
-		super.paintComponent(g);
+    // Cursor;
+    g2d.setColor(Color.YELLOW);
+    int x = console.getCursorX();
+    int y = console.getCursorY();
+    drawCursor(g2d, x, y);
+  }
 
-		TerminalModel console = getTerminalModel();
+  private void drawCursor(Graphics2D g2d, int x, int y) {
 
-		Graphics2D g2d = (Graphics2D) g;
+    TerminalModel console = getTerminalModel();
 
-		fullRepaint(g2d);
+    if (console.getDirectionUp() > 0) {
+      y = (console.getMaxY() - 1 - console.getCursorY());
+    }
+    if (x >= 0 && x < console.getMaxX() && y >= 0 && y < console.getMaxY()) {
+      x = x * pixelsX;
+      y = y * pixelsY + pixelsY;
+      g2d.drawLine(x, y, x + pixelsX, y);
+    }
+  }
 
-		// Cursor;
-		g2d.setColor(Color.YELLOW);
-		int x = console.getCursorX();
-		int y = console.getCursorY();
-		drawCursor(g2d, x, y);
-		//System.out.println("paint: " + System.currentTimeMillis());
-	}
+  private void fullRepaint(Graphics2D g2d) {
 
-	private void drawCursor(Graphics2D g2d, int x, int y) {
+    int screenY = 0;
+    int screenX = 0;
 
-		TerminalModel console = getTerminalModel();
+    TerminalModel console = getTerminalModel();
 
-		if (console.getDirectionUp() > 0) {
-			y = (console.getMaxY() - 1 - console.getCursorY());
-		}
-		if (x >= 0 && x < console.getMaxX() && y >= 0 && y < console.getMaxY()) {
-			x = x * pixelsX;
-			y = y * pixelsY + pixelsY;
-			g2d.drawLine(x, y, x + pixelsX, y);
-		}
-	}
+    if (console.getDirectionUp() > 0) {
+      for (int y = (console.getMaxY() - 1); y >= 0; y--) {
+        for (int x = 0; x < console.getMaxX(); x++) {
+          char c = console.get(x, y);
+          render(g2d, screenX, screenY, c, console);
+          screenX++;
+        }
+        screenY++;
+        screenX = 0;
+      }
+    } else {
+      for (int y = 0; y < console.getMaxY(); y++) {
+        for (int x = 0; x < console.getMaxX(); x++) {
+          char c = console.get(x, y);
+          render(g2d, screenX, screenY, c, console);
+          screenX++;
+        }
+        screenY++;
+        screenX = 0;
+      }
+    }
 
-	private void fullRepaint(Graphics2D g2d) {
-		
-		//plot(0,0,1);
-		//plot(1,0,1);
-		//plot(1,1,1);
-		//plot(0,1,1);
+  }
 
-		int screenY = 0;
-		int screenX = 0;
+  private void render(Graphics2D g2d, int screenX, int screenY, char c, TerminalModel console) {
+    ImageIcon imageIcon;
+    BufferedImage bi;
 
-		TerminalModel console = getTerminalModel();
+    if (((int) c == 32) || ((int) c == 0)) {
+      return;
+    }
 
-		if (console.getDirectionUp() > 0) {
-			for (int y = (console.getMaxY() - 1); y >= 0; y--) {
-				for (int x = 0; x < console.getMaxX(); x++) {
-					char c = console.get(x, y);
-					render(g2d, screenX, screenY, c, console);
-					screenX++;
-				}
-				screenY++;
-				screenX = 0;
-			}
-		}
-		else {
-			for (int y = 0; y < console.getMaxY(); y++) {
-				for (int x = 0; x < console.getMaxX(); x++) {
-					char c = console.get(x, y);
-					render(g2d, screenX, screenY, c, console);
-					screenX++;
-				}
-				screenY++;
-				screenX = 0;
-			}			
-		}
+    boolean isColoredCharset = console.isColoredCharset();
+    if (!isColoredCharset && (isColoredCharset != previousIsColoredCharset)) {
+      // reset all characters to white
+      charset.init();
+    }
+    previousIsColoredCharset = isColoredCharset;
 
-	}
+    if (multiplier == FontSizeMultiplier.ONE) {
+      imageIcon = charset.getImageIcon((int) c);
+    } else {
+      imageIcon = charset.getImageIcon16((int) c);
+    }
 
-	private void render(Graphics2D g2d, int screenX, int screenY, char c, TerminalModel console) {
-		ImageIcon imageIcon;
-		BufferedImage bi;
+    if (imageIcon == null) {
+      return;
+    }
 
-		if (((int)c == 32) || ((int)c == 0))
-			return;
+    if (console.isColoredCharset()) {
+      if (multiplier == FontSizeMultiplier.ONE) {
+        bi = charset.getBufferedImage((int) c);
+      } else {
+        bi = charset.getBufferedImage16((int) c);
+      }
 
-		boolean isColoredCharset = console.isColoredCharset();
-		if (!isColoredCharset && (isColoredCharset != previousIsColoredCharset)) {
-			// reset all characters to white
-			charset.init();
-		}
-		previousIsColoredCharset = isColoredCharset;
+      for (int xx = 0; xx < bi.getWidth(); xx++) {
+        for (int yy = 0; yy < bi.getHeight(); yy++) {
+          int rgb = bi.getRGB(xx, yy);
+          if (rgb != -16777216) {
+            rgb -= 3;
+          }
+          bi.setRGB(xx, yy, rgb);
+        }
+      }
+      imageIcon = new ImageIcon(bi);
+    }
 
-		if (multiplier == FontSizeMultiplier.ONE) {
-			imageIcon = charset.getImageIcon((int) c);
-		} else {
-			imageIcon = charset.getImageIcon16((int) c);
-		}
-
-		if (imageIcon == null)
-			return;
-
-		if (console.isColoredCharset()) {  
-			if (multiplier == FontSizeMultiplier.ONE) {
-				bi = charset.getBufferedImage((int) c);
-			} else {
-				bi = charset.getBufferedImage16((int) c);
-			}
-
-			for (int xx = 0; xx < bi.getWidth(); xx++) {
-				for (int yy = 0; yy < bi.getHeight(); yy++) {
-					int rgb = bi.getRGB(xx, yy);
-					if (rgb != -16777216)
-						rgb -= 3;
-					bi.setRGB(xx, yy, rgb);
-				}
-			}
-			imageIcon = new ImageIcon(bi);
-		}
-
-		g2d.drawImage(imageIcon.getImage(), screenX * pixelsX, screenY * pixelsY, this);
-	}
+    g2d.drawImage(imageIcon.getImage(), screenX * pixelsX, screenY * pixelsY, this);
+  }
 
 }

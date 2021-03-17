@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package radio86java.uiswing;
 
 import java.awt.event.KeyAdapter;
@@ -19,119 +15,110 @@ import static radio86java.uiswing.Utils.loadResource;
 import radio86java.ComputerModelIntf;
 
 public class UserInterfaceImpl extends javax.swing.JFrame
-		implements UserInterfaceIntf {
-	private static final long serialVersionUID = 1L;
+        implements UserInterfaceIntf {
 
-	private boolean freeze = false;
+  private static final long serialVersionUID = 1L;
 
-	private ComputerModelIntf defaultComputerModel;
+  private boolean freeze = false;
 
-	public UserInterfaceImpl(ComputerModelIntf computerModel) {
-		this.defaultComputerModel= computerModel;
+  private final ComputerModelIntf defaultComputerModel;
 
-		initComponents();
-		this.setLocationByPlatform(true);
+  public UserInterfaceImpl(ComputerModelIntf computerModel) {
+    this.defaultComputerModel = computerModel;
 
-		this.setTitle("Симулятор Радио 86РК");
+    initComponents();
 
-		openMenuItem.setEnabled(false);
-		saveMenuItem.setEnabled(false);
-		saveAsMenuItem.setEnabled(false);
-		contentsMenuItem.setEnabled(false);
-		aboutMenuItem.setEnabled(false);
+    openMenuItem.setEnabled(false);
+    saveMenuItem.setEnabled(false);
+    saveAsMenuItem.setEnabled(false);
+    contentsMenuItem.setEnabled(false);
+    aboutMenuItem.setEnabled(false);
 
-		canvas = new TerminalView(getComputerModel(), FontSizeMultiplier.ONE, 1);
+    canvas = new TerminalView(getComputerModel(), FontSizeMultiplier.ONE, 1);
 
-		jScrollPaneConsole.setViewportView(canvas);
+    jScrollPaneConsole.setViewportView(canvas);
 
-		canvas.init();
+    canvas.init();
 
-		KeyAdapter listener = new KeyAdapter() {
+    KeyAdapter listener = new KeyAdapter() {
 
-			@Override
-			public void keyPressed(KeyEvent e) {
+      @Override
+      public void keyPressed(KeyEvent e) {
 
-				getComputerModel().getTerminalModel().key(e);
+        getComputerModel().getTerminalModel().key(e);
 
-				if (getComputerModel().getTerminalModel().isInteractive()) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							canvas.setPartialRepaint(true);
-							canvas.repaint();
-							canvas.setPartialRepaint(false);
-						}
-					});
-				}
+        if (getComputerModel().getTerminalModel().isInteractive()) {
+          SwingUtilities.invokeLater(() -> {
+            canvas.setPartialRepaint(true);
+            canvas.repaint();
+            canvas.setPartialRepaint(false);
+          });
+        }
 
-			}
+      }
 
-		};
+    };
 
-		canvas.addKeyListener(listener);
-		jTabbedPane.addKeyListener(listener);
+    canvas.addKeyListener(listener);
+    jTabbedPane.addKeyListener(listener);
 
-		// TODO: check
-		jTabbedPane.addChangeListener((ChangeEvent e) -> {
-			if (jTabbedPane.getSelectedIndex() == 0) {
-				canvas.requestFocus();
-			}
-		});
+    // TODO: check
+    jTabbedPane.addChangeListener((ChangeEvent e) -> {
+      if (jTabbedPane.getSelectedIndex() == 0) {
+        canvas.requestFocus();
+      }
+    });
 
-	}
+  }
 
-	private ComputerModelIntf getComputerModel() {
-		return defaultComputerModel;
-	}
+  private ComputerModelIntf getComputerModel() {
+    return defaultComputerModel;
+  }
 
-	public JEditorPane getEditor() {
-		return jEditorPane;
-	}
+  public JEditorPane getEditor() {
+    return jEditorPane;
+  }
 
-	@Override
-	public String showInputDialog(String message) {
-		return JOptionPane.showInputDialog(this, message, "");
-	}
+  @Override
+  public String showInputDialog(String message) {
+    return JOptionPane.showInputDialog(this, message, "");
+  }
 
-	@Override
-	public void updateScreen() {
-		if (!freeze) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					canvas.setPartialRepaint(true);
-					canvas.repaint();
-					canvas.setPartialRepaint(false);
-				}
-			});
-		}
-	}
+  @Override
+  public void updateScreen() {
+    if (!freeze) {
+      SwingUtilities.invokeLater(() -> {
+        canvas.setPartialRepaint(true);
+        canvas.repaint();
+        canvas.setPartialRepaint(false);
+      });
+    }
+  }
 
-	public boolean isFreeze() {
-		return freeze;
-	}
+  public boolean isFreeze() {
+    return freeze;
+  }
 
-	@Override
-	public void setFreeze(boolean freeze) {
-		this.freeze = freeze;
-		if (freeze) {
-			getCanvas().setFreezeJPanel(true);
-		}
-		else {
-			getCanvas().setFreezeJPanel(false);
-			updateScreen();
-		}
-	}
+  @Override
+  public void setFreeze(boolean freeze) {
+    this.freeze = freeze;
+    if (freeze) {
+      getCanvas().setFreezeJPanel(true);
+    } else {
+      getCanvas().setFreezeJPanel(false);
+      updateScreen();
+    }
+  }
 
-	TerminalView getCanvas() {
-		return canvas;
-	}
+  TerminalView getCanvas() {
+    return canvas;
+  }
 
-	/**
+  /**
 	 * This method is called from within the constructor to initialize the form. WARNING: Do NOT
 	 * modify this code. The content of this method is always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+   */
+  @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
@@ -378,31 +365,28 @@ public class UserInterfaceImpl extends javax.swing.JFrame
   }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-		System.exit(0);
+      System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-	private ThreadGroup tg = null;
+  private ThreadGroup tg = null;
 
 	private void runMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMenuItemActionPerformed
-		String listing = jEditorPane.getText();
-		listing += " "; // TODO fix it
-		jTabbedPane.setSelectedIndex(0);
-		//Basic basic = new Basic();
-		//basic.run(listing, this);
-		canvas.requestFocus();
-		final Listing listing1 = new Listing(listing);
+    String listing = jEditorPane.getText();
+    listing += " "; // TODO fix it
+    jTabbedPane.setSelectedIndex(0);
+    //Basic basic = new Basic();
+    //basic.run(listing, this);
+    canvas.requestFocus();
+    final Listing listing1 = new Listing(listing);
 
-		stop();
-		tg = new ThreadGroup ("rk js thread group");
+    stop();
+    tg = new ThreadGroup("rk js thread group");
 
-		Thread thread = new Thread (tg, new Runnable() {
-			@Override
-			public void run() {
-				InterpreterInterface interp = InterpreterFactory.create(listing1.getLanguage());
-				interp.run(listing1, UserInterfaceImpl.this, getComputerModel());
-			}
-		});
-		thread.start();
+    Thread thread = new Thread(tg, () -> {
+      InterpreterInterface interp = InterpreterFactory.create(listing1.getLanguage());
+      interp.run(listing1, UserInterfaceImpl.this, getComputerModel());
+    });
+    thread.start();
 	}//GEN-LAST:event_runMenuItemActionPerformed
 
 	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -410,10 +394,11 @@ public class UserInterfaceImpl extends javax.swing.JFrame
 	}//GEN-LAST:event_jMenuItem1ActionPerformed
 
   private void toggleCanvasEditor() {
-		jTabbedPane.setSelectedIndex(1 - jTabbedPane.getSelectedIndex());
-		
-		if (jTabbedPane.getSelectedIndex() == 0)
-			canvas.requestFocus();
+    jTabbedPane.setSelectedIndex(1 - jTabbedPane.getSelectedIndex());
+
+    if (jTabbedPane.getSelectedIndex() == 0) {
+      canvas.requestFocus();
+    }
   }
 
   private void showEditor() {
@@ -422,17 +407,16 @@ public class UserInterfaceImpl extends javax.swing.JFrame
   }
 
     private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
-		TerminalModel console = getComputerModel().getTerminalModel();
-		if (jCheckBoxMenuItemColoredCharset.isSelected()) {
-			console.setColoredCharset(true);
-		}
-		else {
-			console.setColoredCharset(false);
-		}
+      TerminalModel console = getComputerModel().getTerminalModel();
+      if (jCheckBoxMenuItemColoredCharset.isSelected()) {
+        console.setColoredCharset(true);
+      } else {
+        console.setColoredCharset(false);
+      }
     }//GEN-LAST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
 
     private void jMenuItemStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemStopActionPerformed
-		stop();
+      stop();
     }//GEN-LAST:event_jMenuItemStopActionPerformed
 
   private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
@@ -498,8 +482,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame
     if (this.getEditor().getText().trim().length() == 0) {
       this.getEditor().setText(text);
       showEditor();
-    }
-    else {
+    } else {
       int value = JOptionPane.showConfirmDialog(this, "Ignore existing code?",
               "New/Load", JOptionPane.OK_CANCEL_OPTION);
       if (value == JOptionPane.OK_OPTION) {
@@ -509,28 +492,24 @@ public class UserInterfaceImpl extends javax.swing.JFrame
     }
   }
 
-	private void stop() {
-		ThreadGroup tg1 = this.tg;
-		this.tg = null;
-        if (tg1 != null) {
-			//System.out.println("Attempt to stop the application...");
-			if (tg1.activeCount() > 0) {
-				System.out.println("Attempt to stop the application... ");
-				tg1.stop();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException ex) {
-				}
-				tg1.destroy();
-			}
-			else {
-				//System.out.println("We don't need to stop the application...");
-			}
-		}
-	}
+  private void stop() {
+    ThreadGroup tg1 = this.tg;
+    this.tg = null;
+    if (tg1 != null) {
+      if (tg1.activeCount() > 0) {
+        System.out.println("Attempt to stop the application... ");
+        tg1.stop();
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+        }
+        tg1.destroy();
+      }
+    }
+  }
 
-	private TerminalView canvas;
-	
+  private TerminalView canvas;
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JMenuItem aboutMenuItem;
   private javax.swing.JMenuItem contentsMenuItem;
