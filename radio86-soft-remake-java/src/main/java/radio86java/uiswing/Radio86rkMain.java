@@ -2,7 +2,7 @@ package radio86java.uiswing;
 
 //import radio86java.basic.Basic;
 
-import radio86java.ComputerModelImpl;
+import radio86java.ComputerModel;
 import radio86java.ComputerModelIntf;
 
 
@@ -10,7 +10,7 @@ public class Radio86rkMain {
 
   public static void main(String[] argv) {
 
-    ComputerModelIntf computerModel = new ComputerModelImpl();
+    ComputerModelIntf computerModel = new ComputerModel();
 
     final UserInterfaceImpl screen = new UserInterfaceImpl(computerModel);
 

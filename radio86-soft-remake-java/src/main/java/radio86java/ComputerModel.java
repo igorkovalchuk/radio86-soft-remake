@@ -1,10 +1,10 @@
 package radio86java;
 
-public class ComputerModelImpl implements ComputerModelIntf {
+public class ComputerModel implements ComputerModelIntf {
 
   private TerminalModel terminalModel = new TerminalModel();
 
-  public ComputerModelImpl() {
+  public ComputerModel() {
   }
 
   @Override

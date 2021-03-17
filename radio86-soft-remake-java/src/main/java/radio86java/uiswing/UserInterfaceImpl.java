@@ -10,7 +10,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
-import radio86java.ComputerModelImpl;
 import radio86java.InterpreterFactory;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
