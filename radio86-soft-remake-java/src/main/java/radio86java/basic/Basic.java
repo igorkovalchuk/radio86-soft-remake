@@ -5,6 +5,7 @@ import java.util.Map;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
 import radio86java.UserInterfaceIntf;
+import radio86java.ComputerModelIntf;
 
 /**
  * N = 5
@@ -25,11 +26,12 @@ public class Basic implements InterpreterInterface {
 			"30 PRINT (X+Y)";
 
 		Basic b = new Basic();
-		b.run(new Listing(text), null);
+		b.run(new Listing(text), null, null);
 	}
 
 	@Override
-	public void run(Listing listing, UserInterfaceIntf screen) {
+	public void run(Listing listing, UserInterfaceIntf screen,
+			ComputerModelIntf computerModel) {
 		Basic1 b1 = new Basic1();
 		BasicStructure1 s1 = b1.parse(listing.getText());
 		//s1.print();
@@ -42,7 +44,7 @@ public class Basic implements InterpreterInterface {
 			e.parse();
 
 		BasicInterpreter bi = new BasicInterpreter();
-		bi.interpret(s2, screen);
+		bi.interpret(s2, screen, computerModel);
 	}
 
 	static final Integer TYPE_0 = 0;

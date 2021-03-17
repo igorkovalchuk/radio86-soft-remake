@@ -10,19 +10,22 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
+import radio86java.ComputerModelImpl;
 import radio86java.InterpreterFactory;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
 import radio86java.TerminalModel;
 import radio86java.UserInterfaceIntf;
 import static radio86java.uiswing.Utils.loadResource;
+import radio86java.ComputerModelIntf;
 
-public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfaceIntf {
+public class UserInterfaceImpl extends javax.swing.JFrame
+		implements UserInterfaceIntf {
 	private static final long serialVersionUID = 1L;
 
 	private boolean freeze = false;
 
-	private TerminalModel console = new TerminalModel();
+	private ComputerModelIntf defaultComputerModel = new ComputerModelImpl();
 
 	public UserInterfaceImpl() {
 		initComponents();
@@ -36,7 +39,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 		contentsMenuItem.setEnabled(false);
 		aboutMenuItem.setEnabled(false);
 
-		canvas = new CanvasImpl(console, 1, 1);
+		canvas = new CanvasImpl(getComputerModel(), 1, 1);
 
 		jScrollPaneConsole.setViewportView(canvas);
 
@@ -47,9 +50,9 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 			@Override
 			public void keyPressed(KeyEvent e) {
 
-				canvas.getTerminalModel().key(e);
+				getComputerModel().getTerminalModel().key(e);
 
-				if (canvas.getTerminalModel().isInteractive()) {
+				if (getComputerModel().getTerminalModel().isInteractive()) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -76,6 +79,10 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 
 	}
 
+	private ComputerModelIntf getComputerModel() {
+		return defaultComputerModel;
+	}
+
 	public JEditorPane getEditor() {
 		return jEditorPane;
 	}
@@ -91,7 +98,6 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					TerminalModel c = canvas.getTerminalModel();
 					canvas.setPartialRepaint(true);
 					canvas.repaint();
 					canvas.setPartialRepaint(false);
@@ -114,11 +120,6 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 			getCanvas().setFreezeJPanel(false);
 			updateScreen();
 		}
-	}
-
-	@Override
-	public TerminalModel getTerminalModel() {
-		return canvas.getTerminalModel();
 	}
 
 	CanvasImpl getCanvas() {
@@ -397,7 +398,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
 			@Override
 			public void run() {
 				InterpreterInterface interp = InterpreterFactory.create(listing1.getLanguage());
-				interp.run(listing1, UserInterfaceImpl.this);
+				interp.run(listing1, UserInterfaceImpl.this, getComputerModel());
 			}
 		});
 		thread.start();
@@ -420,7 +421,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame implements UserInterfa
   }
 
     private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
-        TerminalModel console = canvas.getTerminalModel();
+		TerminalModel console = getComputerModel().getTerminalModel();
 		if (jCheckBoxMenuItemColoredCharset.isSelected()) {
 			console.setColoredCharset(true);
 		}

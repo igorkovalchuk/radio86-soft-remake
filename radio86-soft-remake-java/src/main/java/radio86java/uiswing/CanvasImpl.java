@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import radio86java.ComputerModelIntf;
 import radio86java.TerminalModel;
 
 public class CanvasImpl extends JPanel {
@@ -15,7 +16,7 @@ public class CanvasImpl extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
 
-	private final TerminalModel console;
+	private final ComputerModelIntf computerModel;
 
 	private final int multiplier;
 
@@ -29,14 +30,16 @@ public class CanvasImpl extends JPanel {
 	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
 	 * @param space some space around chars
 	 */
-	CanvasImpl(TerminalModel console, int multiplier, int space) {
-		this.console = console;
+	CanvasImpl(ComputerModelIntf computerModel, int multiplier, int space) {
+		this.computerModel = computerModel;
 		this.multiplier = multiplier;
 		this.pixelsX = 8 * multiplier + space;
 		this.pixelsY = 8 * multiplier + space;
 	}
 
 	void init() {
+
+		TerminalModel console = getTerminalModel();
 
 		setBackground(Color.BLACK);
 		Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
@@ -56,8 +59,8 @@ public class CanvasImpl extends JPanel {
 
 	}
 
-	TerminalModel getTerminalModel() {
-		return console;
+	private TerminalModel getTerminalModel() {
+		return computerModel.getTerminalModel();
 	}
 
 	private static long t1 = 0;
@@ -88,6 +91,8 @@ public class CanvasImpl extends JPanel {
 
 		super.paintComponent(g);
 
+		TerminalModel console = getTerminalModel();
+
 		Graphics2D g2d = (Graphics2D) g;
 
 		fullRepaint(g2d);
@@ -101,6 +106,9 @@ public class CanvasImpl extends JPanel {
 	}
 
 	private void drawCursor(Graphics2D g2d, int x, int y) {
+
+		TerminalModel console = getTerminalModel();
+
 		if (console.getDirectionUp() > 0) {
 			y = (console.getMaxY() - 1 - console.getCursorY());
 		}
@@ -120,6 +128,8 @@ public class CanvasImpl extends JPanel {
 
 		int screenY = 0;
 		int screenX = 0;
+
+		TerminalModel console = getTerminalModel();
 
 		if (console.getDirectionUp() > 0) {
 			for (int y = (console.getMaxY() - 1); y >= 0; y--) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.script.ScriptException;
 import radio86java.UserInterfaceIntf;
 import static radio86java.basic.Basic.*;
+import radio86java.ComputerModelIntf;
 
 public class Expression {
 	
@@ -58,7 +59,8 @@ public class Expression {
 
 	}
 
-	public void interpret(UserInterfaceIntf screen, BasicVariables variables) throws ScriptException {
+	public void interpret(UserInterfaceIntf screen, ComputerModelIntf computerModel,
+			BasicVariables variables) throws ScriptException {
 		
 		if(types[0] == TYPE_OPERATOR_PRINT) {
 			String[] parameters = readParameters(1, -1, variables);
@@ -68,26 +70,26 @@ public class Expression {
 					parameter += p;
 			System.out.println("PRINT " + parameter);
 			if (screen != null) {	
-				screen.getTerminalModel().println(parameter);
+				computerModel.getTerminalModel().println(parameter);
 				screen.updateScreen();
 			}
 		} else if (types[0] == TYPE_OPERATOR_CUR) {
 			String[] parameters = readParameters(1, 2, variables);
 			System.out.println("CUR " + parameters[0] + " " + parameters[1]);
 			if (screen != null) {
-				screen.getTerminalModel().point((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue());
+				computerModel.getTerminalModel().point((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue());
 			}
 		} else if (types[0] == TYPE_OPERATOR_CLS) {
 			System.out.println("CLS");
 			if (screen != null) {
-				screen.getTerminalModel().cls();
+				computerModel.getTerminalModel().cls();
 				screen.updateScreen();
 			}
 		} else if (types[0] == TYPE_OPERATOR_PLOT) {
 			String[] parameters = readParameters(1, 3, variables);
 			System.out.println("PLOT " + parameters[0] + " " + parameters[1] + " " + parameters[2]);
 			if (screen != null) {
-				screen.getTerminalModel().plot((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue(),(Double.valueOf(parameters[2]).intValue()));
+				computerModel.getTerminalModel().plot((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue(),(Double.valueOf(parameters[2]).intValue()));
 				screen.updateScreen();
 			}	
 		} else if (types[0] == TYPE_VARIABLE) {

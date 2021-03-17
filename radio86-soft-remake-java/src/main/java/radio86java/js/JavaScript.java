@@ -11,15 +11,17 @@ import radio86java.InterpreterInterface;
 import radio86java.Listing;
 import radio86java.Radio86rkAPI;
 import radio86java.UserInterfaceIntf;
+import radio86java.ComputerModelIntf;
 
 public class JavaScript implements InterpreterInterface {
 
 	@Override
-	public void run(Listing listing, UserInterfaceIntf screen) {
+	public void run(Listing listing, UserInterfaceIntf screen,
+		ComputerModelIntf computerModel) {
 
-		screen.getTerminalModel().setInteractive(false);
+		computerModel.getTerminalModel().setInteractive(false);
 
-		Radio86rkAPI api = Radio86rkAPI.initializeInstance(screen);
+		Radio86rkAPI api = new Radio86rkAPI(computerModel, screen);
 
 		ScriptEngineManager manager = new ScriptEngineManager();
 
@@ -72,15 +74,15 @@ public class JavaScript implements InterpreterInterface {
                     functions.append(f).append("\n");
                 }
 
-		try {
-			Object result = engine.eval(functions.toString() + listing.getText());
-			System.out.println("Result of ScriptEngine.eval(): " + result);
-			screen.getTerminalModel().setInteractive(true);
-		}
-		catch(ScriptException ex) {
-			ex.printStackTrace();
-		}
-	}
+    try {
+      Object result = engine.eval(functions.toString() + listing.getText());
+      System.out.println("Result of ScriptEngine.eval(): " + result);
+      computerModel.getTerminalModel().setInteractive(true);
+    } catch (ScriptException ex) {
+      ex.printStackTrace();
+    }
+
+  }
 
         private void printEngines() {
                 List<ScriptEngineFactory> engines = (new ScriptEngineManager()).getEngineFactories();
