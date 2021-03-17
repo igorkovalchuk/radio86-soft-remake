@@ -9,13 +9,13 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
-import radio86java.uiswing.UserInterfaceImpl;
 import radio86java.Radio86rkAPI;
+import radio86java.UserInterfaceIntf;
 
 public class JavaScript implements InterpreterInterface {
 
 	@Override
-	public void run(Listing listing, UserInterfaceImpl screen) {
+	public void run(Listing listing, UserInterfaceIntf screen) {
 
 		screen.getTerminalModel().setInteractive(false);
 

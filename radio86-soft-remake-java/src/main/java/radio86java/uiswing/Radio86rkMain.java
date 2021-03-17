@@ -1,7 +1,6 @@
-package radio86java;
+package radio86java.uiswing;
 
 //import radio86java.basic.Basic;
-import radio86java.uiswing.UserInterfaceImpl;
 
 public class Radio86rkMain {
 

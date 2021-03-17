@@ -1,13 +1,11 @@
 package radio86java.basic;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.ScriptException;
-import radio86java.uiswing.UserInterfaceImpl;
+import radio86java.UserInterfaceIntf;
 
 public class BasicInterpreter {
 
-	public void interpret(BasicStructure2 structure, UserInterfaceImpl screen) {
+	public void interpret(BasicStructure2 structure, UserInterfaceIntf screen) {
 		
 		BasicVariables variables = new BasicVariables();
 

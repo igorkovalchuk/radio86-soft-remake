@@ -1,9 +1,7 @@
 package radio86java;
 
-import radio86java.uiswing.UserInterfaceImpl;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
-import javax.swing.JOptionPane;
 import radio86java.file.FileUtils;
 import radio86java.file.SimpleFileInterface;
 
@@ -15,14 +13,14 @@ public class Radio86rkAPI {
 
 	private static Radio86rkAPI instance;
 
-	private final UserInterfaceImpl screen;
+	private final UserInterfaceIntf screen;
 
-	public static Radio86rkAPI initializeInstance(UserInterfaceImpl screen1) {
+	public static Radio86rkAPI initializeInstance(UserInterfaceIntf screen1) {
 		instance = new Radio86rkAPI(screen1);
 		return instance;
 	}
 
-	public Radio86rkAPI(UserInterfaceImpl screen1) {
+	public Radio86rkAPI(UserInterfaceIntf screen1) {
 		screen = screen1;
 	}
 
@@ -80,7 +78,6 @@ public class Radio86rkAPI {
 
 	public void freeze() {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getCanvas().setFreezeJPanel(true);
 			instance.screen.setFreeze(true);
 		}
 	}
@@ -88,8 +85,6 @@ public class Radio86rkAPI {
 	public void unfreeze() {
 		if (instance != null && instance.screen != null) {
 			instance.screen.setFreeze(false);
-			instance.screen.getCanvas().setFreezeJPanel(false);
-			instance.screen.updateScreen();
 		}
 	}
 
@@ -182,7 +177,7 @@ public class Radio86rkAPI {
 	public String input(String message) {
 		String value = "";
 		if (instance != null && instance.screen != null) {
-			value = JOptionPane.showInputDialog(instance.screen, message, "");
+			value = instance.screen.showInputDialog(message);
 			//while(true) {
 				// if without an JOptionPane wait and allow another thread 
 				// to read an input String from user;	

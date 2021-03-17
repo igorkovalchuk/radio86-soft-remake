@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import radio86java.Charset;
 import radio86java.TerminalModel;
 
 public class CanvasImpl extends JPanel {
@@ -30,14 +29,14 @@ public class CanvasImpl extends JPanel {
 	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
 	 * @param space some space around chars
 	 */
-	public CanvasImpl(TerminalModel console, int multiplier, int space) {
+	CanvasImpl(TerminalModel console, int multiplier, int space) {
 		this.console = console;
 		this.multiplier = multiplier;
 		this.pixelsX = 8 * multiplier + space;
 		this.pixelsY = 8 * multiplier + space;
 	}
 
-	public void init() {
+	void init() {
 
 		setBackground(Color.BLACK);
 		Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
@@ -57,7 +56,7 @@ public class CanvasImpl extends JPanel {
 
 	}
 
-	public TerminalModel getTerminalModel() {
+	TerminalModel getTerminalModel() {
 		return console;
 	}
 
@@ -65,15 +64,15 @@ public class CanvasImpl extends JPanel {
 	
 	private boolean partial = false;
 
-	public void setPartialRepaint(boolean value) {
+	void setPartialRepaint(boolean value) {
 		this.partial = value;
 	}
 
-	public boolean isFreezeJPanel() {
+	boolean isFreezeJPanel() {
 		return freezeJPanel;
 	}
 
-	public void setFreezeJPanel(boolean freezeJPanel) {
+	void setFreezeJPanel(boolean freezeJPanel) {
 		this.freezeJPanel = freezeJPanel;
 	}
 

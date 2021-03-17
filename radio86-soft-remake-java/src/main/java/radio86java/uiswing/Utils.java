@@ -1,4 +1,4 @@
-package radio86java;
+package radio86java.uiswing;
 
 import java.io.InputStream;
 import java.util.Scanner;

@@ -2,9 +2,9 @@ package radio86java.basic;
 
 import java.util.HashMap;
 import java.util.Map;
-import radio86java.uiswing.UserInterfaceImpl;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
+import radio86java.UserInterfaceIntf;
 
 /**
  * N = 5
@@ -29,7 +29,7 @@ public class Basic implements InterpreterInterface {
 	}
 
 	@Override
-	public void run(Listing listing, UserInterfaceImpl screen) {
+	public void run(Listing listing, UserInterfaceIntf screen) {
 		Basic1 b1 = new Basic1();
 		BasicStructure1 s1 = b1.parse(listing.getText());
 		//s1.print();

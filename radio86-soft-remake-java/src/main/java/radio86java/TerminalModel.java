@@ -208,7 +208,7 @@ public class TerminalModel {
 		} else {
 			move1(fixed);
 			if (inScreen(cursorX, cursorY))
-				modifyYX(cursorY, cursorX, Charset.converse(c));
+				modifyYX(cursorY, cursorX, CharsetUtils.converse(c));
 			move2(fixed);
 		}
 	}

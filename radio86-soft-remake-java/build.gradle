@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
 apply plugin: 'application'
 
 
-mainClassName = 'radio86java.Radio86rkMain'
+mainClassName = 'radio86java.uiswing.Radio86rkMain'
 
 repositories {
     jcenter()
