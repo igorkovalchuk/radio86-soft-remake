@@ -3,6 +3,9 @@ package radio86java;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+/**
+ * TerminalModel (former Console.java)
+ */
 public class TerminalModel {
 
 	private final int maxX = 64; // 64

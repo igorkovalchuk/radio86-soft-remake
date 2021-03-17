@@ -55,7 +55,7 @@ public class Monitor extends JPanel {
 
 	}
 
-	public TerminalModel getConsole() {
+	public TerminalModel getTerminalModel() {
 		return console;
 	}
 

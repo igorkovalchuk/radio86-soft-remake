@@ -68,26 +68,26 @@ public class Expression {
 					parameter += p;
 			System.out.println("PRINT " + parameter);
 			if (screen != null) {	
-				screen.getConsole().println(parameter);
+				screen.getTerminalModel().println(parameter);
 				screen.updateScreen();
 			}
 		} else if (types[0] == TYPE_OPERATOR_CUR) {
 			String[] parameters = readParameters(1, 2, variables);
 			System.out.println("CUR " + parameters[0] + " " + parameters[1]);
 			if (screen != null) {
-				screen.getConsole().point((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue());
+				screen.getTerminalModel().point((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue());
 			}
 		} else if (types[0] == TYPE_OPERATOR_CLS) {
 			System.out.println("CLS");
 			if (screen != null) {
-				screen.getConsole().cls();
+				screen.getTerminalModel().cls();
 				screen.updateScreen();
 			}
 		} else if (types[0] == TYPE_OPERATOR_PLOT) {
 			String[] parameters = readParameters(1, 3, variables);
 			System.out.println("PLOT " + parameters[0] + " " + parameters[1] + " " + parameters[2]);
 			if (screen != null) {
-				screen.getConsole().plot((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue(),(Double.valueOf(parameters[2]).intValue()));
+				screen.getTerminalModel().plot((Double.valueOf(parameters[0]).intValue()), (Double.valueOf(parameters[1])).intValue(),(Double.valueOf(parameters[2]).intValue()));
 				screen.updateScreen();
 			}	
 		} else if (types[0] == TYPE_VARIABLE) {

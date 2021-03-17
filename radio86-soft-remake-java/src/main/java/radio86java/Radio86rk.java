@@ -42,9 +42,9 @@ public class Radio86rk extends javax.swing.JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 
-				canvas.getConsole().key(e);
+				canvas.getTerminalModel().key(e);
 
-				if (canvas.getConsole().isInteractive()) {
+				if (canvas.getTerminalModel().isInteractive()) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -78,7 +78,7 @@ public class Radio86rk extends javax.swing.JFrame {
 			@Override
 			public void run() {
 				if (true) {
-					TerminalModel c = canvas.getConsole();
+					TerminalModel c = canvas.getTerminalModel();
 					for(int r = 3; r < 25; r+=4)
 						circle(c, 75, 25, r);
 				}
@@ -98,7 +98,7 @@ public class Radio86rk extends javax.swing.JFrame {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					TerminalModel c = canvas.getConsole();
+					TerminalModel c = canvas.getTerminalModel();
 					canvas.setPartialRepaint(true);
 					canvas.repaint();
 					canvas.setPartialRepaint(false);
@@ -115,8 +115,8 @@ public class Radio86rk extends javax.swing.JFrame {
 		this.freeze = freeze;
 	}
 
-	public TerminalModel getConsole() {
-		return canvas.getConsole();
+	public TerminalModel getTerminalModel() {
+		return canvas.getTerminalModel();
 	}
 
 	public Monitor getCanvas() {
@@ -427,7 +427,7 @@ public class Radio86rk extends javax.swing.JFrame {
   }
 
     private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
-        TerminalModel console = canvas.getConsole();
+        TerminalModel console = canvas.getTerminalModel();
 		if (jCheckBoxMenuItemColoredCharset.isSelected()) {
 			console.setColoredCharset(true);
 		}

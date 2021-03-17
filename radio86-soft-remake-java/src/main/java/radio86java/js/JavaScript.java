@@ -17,7 +17,7 @@ public class JavaScript implements InterpreterInterface {
 	@Override
 	public void run(Listing listing, Radio86rk screen) {
 
-		screen.getConsole().setInteractive(false);
+		screen.getTerminalModel().setInteractive(false);
 
 		Radio86rkAPI api = Radio86rkAPI.initializeInstance(screen);
 
@@ -75,7 +75,7 @@ public class JavaScript implements InterpreterInterface {
 		try {
 			Object result = engine.eval(functions.toString() + listing.getText());
 			System.out.println("Result of ScriptEngine.eval(): " + result);
-			screen.getConsole().setInteractive(true);
+			screen.getTerminalModel().setInteractive(true);
 		}
 		catch(ScriptException ex) {
 			ex.printStackTrace();

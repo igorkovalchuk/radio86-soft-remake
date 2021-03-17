@@ -27,7 +27,7 @@ public class Radio86rkAPI {
 
 	public void interactive(boolean interact) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().setInteractive(interact);
+			instance.screen.getTerminalModel().setInteractive(interact);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class Radio86rkAPI {
 
 	public void print(Object message) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().print(String.valueOf(message));
+			instance.screen.getTerminalModel().print(String.valueOf(message));
 			instance.screen.updateScreen();
 		}
 	}
@@ -48,7 +48,7 @@ public class Radio86rkAPI {
 
 	public void println(Object message) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().println(String.valueOf(message));
+			instance.screen.getTerminalModel().println(String.valueOf(message));
 			instance.screen.updateScreen();
 		}
 	}
@@ -112,7 +112,7 @@ public class Radio86rkAPI {
 	public void cur(double x, double y) {
 		//System.out.println("CUR " + x + " " + y);
 		if (instance != null && instance.screen != null)
-			instance.screen.getConsole().point(toInt(x), toInt(y));
+			instance.screen.getTerminalModel().point(toInt(x), toInt(y));
 	}
 
 	public void PRINTTAB(double x) {
@@ -121,7 +121,7 @@ public class Radio86rkAPI {
 
 	public void printtab(double x) {
 		if (instance != null && instance.screen != null)
-			instance.screen.getConsole().tab(toInt(x));
+			instance.screen.getTerminalModel().tab(toInt(x));
 	}
 
 	public void CLS() {
@@ -131,7 +131,7 @@ public class Radio86rkAPI {
 	public void cls() {
 		//System.out.println("CLS");
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().cls();
+			instance.screen.getTerminalModel().cls();
 			instance.screen.updateScreen();
 		}
 	}
@@ -143,7 +143,7 @@ public class Radio86rkAPI {
 	public void plot(double x, double y, int z) {
 		//System.out.println("PLOT " + x + " " + y + " " + z);
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().plot(toInt(x), toInt(y), z);
+			instance.screen.getTerminalModel().plot(toInt(x), toInt(y), z);
 			instance.screen.updateScreen();
 		}
 	}
@@ -151,7 +151,7 @@ public class Radio86rkAPI {
 	// arc in degrees;
 	public void arcD(double x, double y, double r, double a1, double a2) {
 		if (instance != null && instance.screen != null) {
-			TerminalModel c = instance.screen.getConsole();
+			TerminalModel c = instance.screen.getTerminalModel();
 			for (double i = a1 * Math.PI; i <= a2 * Math.PI; i += 0.03) {
 				c.plot(
 					(int)Math.rint(x + Math.cos(i) * r),
@@ -163,7 +163,7 @@ public class Radio86rkAPI {
 
 	public void circle(double x, double y, double r) {
 		if (instance != null && instance.screen != null) {
-			TerminalModel c = instance.screen.getConsole();
+			TerminalModel c = instance.screen.getTerminalModel();
 			for (double i = 0; i <= 2 * Math.PI; i += 0.03) {
 				c.plot((int)Math.rint(x + Math.cos(i) * r),
 					(int)Math.rint(y + Math.sin(i) * r), 1);
@@ -207,7 +207,7 @@ public class Radio86rkAPI {
 				if ((System.currentTimeMillis() - time1) > 5 * 60 * 1000) {
 					break; // 5 minutes timeout;
 				}
-				event = instance.screen.getConsole().getLastKeyboardEvent(100);
+				event = instance.screen.getTerminalModel().getLastKeyboardEvent(100);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException ex) {
@@ -242,7 +242,7 @@ public class Radio86rkAPI {
 				if ((System.currentTimeMillis() - time1) > 5 * 60 * 1000) {
 					break; // 5 minutes timeout;
 				}
-				event = instance.screen.getConsole().getLastKeyboardEvent(5000);
+				event = instance.screen.getTerminalModel().getLastKeyboardEvent(5000);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException ex) {
@@ -252,7 +252,7 @@ public class Radio86rkAPI {
 		}
 		else {
 			// don't wait;
-			event = instance.screen.getConsole().getLastKeyboardEvent(5000);
+			event = instance.screen.getTerminalModel().getLastKeyboardEvent(5000);
 		}
 		
 		if (event == null)
@@ -287,7 +287,7 @@ public class Radio86rkAPI {
 	public String screen(double x, double y) {
 		String value = "";
 		if (instance != null && instance.screen != null) {
-			value = String.valueOf(instance.screen.getConsole().get(toInt(x), toInt(y)));
+			value = String.valueOf(instance.screen.getTerminalModel().get(toInt(x), toInt(y)));
 		}
 		return value;
 	}
@@ -298,7 +298,7 @@ public class Radio86rkAPI {
 
 	public void line(double x, double y) {
 		if (instance != null && instance.screen != null) {
-			instance.screen.getConsole().line(toInt(x), toInt(y));
+			instance.screen.getTerminalModel().line(toInt(x), toInt(y));
 			instance.screen.updateScreen();
 		}
 	}
@@ -311,13 +311,13 @@ public class Radio86rkAPI {
 	}
 
 	public void poke(int addr, int value) {
-		instance.screen.getConsole().poke(addr, value);
+		instance.screen.getTerminalModel().poke(addr, value);
 		// TODO: optimize
 		instance.screen.updateScreen();
 	}
 
 	public int peek(int addr) {
-		return instance.screen.getConsole().peek(addr);
+		return instance.screen.getTerminalModel().peek(addr);
 	}
 
 	public char chr(int value) {
