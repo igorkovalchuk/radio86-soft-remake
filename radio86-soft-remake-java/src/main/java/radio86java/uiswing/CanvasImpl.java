@@ -1,4 +1,4 @@
-package radio86java;
+package radio86java.uiswing;
 
 //import java.awt.Canvas;
 import java.awt.Color;
@@ -8,8 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import radio86java.Charset;
+import radio86java.TerminalModel;
 
-public class Monitor extends JPanel {
+public class CanvasImpl extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
@@ -28,7 +30,7 @@ public class Monitor extends JPanel {
 	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
 	 * @param space some space around chars
 	 */
-	public Monitor(TerminalModel console, int multiplier, int space) {
+	public CanvasImpl(TerminalModel console, int multiplier, int space) {
 		this.console = console;
 		this.multiplier = multiplier;
 		this.pixelsX = 8 * multiplier + space;

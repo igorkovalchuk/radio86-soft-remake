@@ -1,5 +1,6 @@
 package radio86java;
 
+import radio86java.uiswing.CanvasImpl;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.IOException;
@@ -91,9 +92,7 @@ public class Charset {
 	}
 	
 	public void init() {
-		InputStream is = Monitor.class.getResourceAsStream("rk_font1.bmp");
-		if (is == null)
-			throw new RuntimeException("Graphics InputStream == null");
+		InputStream is = Utils.getCharsetResourceAsStream();
 		
 		BufferedImage image;
 		try {

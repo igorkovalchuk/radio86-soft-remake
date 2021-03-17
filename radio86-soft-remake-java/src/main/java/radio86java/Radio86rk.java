@@ -4,6 +4,7 @@
  */
 package radio86java;
 
+import radio86java.uiswing.CanvasImpl;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
@@ -31,7 +32,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		contentsMenuItem.setEnabled(false);
 		aboutMenuItem.setEnabled(false);
 
-		canvas = new Monitor(console, 1, 1);
+		canvas = new CanvasImpl(console, 1, 1);
 
 		jScrollPaneConsole.setViewportView(canvas);
 
@@ -119,7 +120,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		return canvas.getTerminalModel();
 	}
 
-	public Monitor getCanvas() {
+	public CanvasImpl getCanvas() {
 		return canvas;
 	}
 
@@ -576,7 +577,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		});
 	}
 	
-	private Monitor canvas;
+	private CanvasImpl canvas;
 	
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JMenuItem aboutMenuItem;

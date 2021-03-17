@@ -5,11 +5,22 @@ import java.util.Scanner;
 
 public class Utils {
 
+  private static final String RESOURCES_PATH = "/radio86java/";
+  private static final String SAMPLES_PATH = RESOURCES_PATH + "samples/";
+
+  public static InputStream getCharsetResourceAsStream() {
+    String name = "rk_font1.bmp";
+    InputStream is = Class.class.getResourceAsStream(RESOURCES_PATH + name);
+    if (is == null) {
+      throw new RuntimeException("Graphics InputStream == null");
+    }
+    return is;
+  }
+
   public static String loadResource(String name) {
     StringBuilder listing = new StringBuilder();
 
-    String prefix = "/radio86java/samples/";
-    InputStream is = Class.class.getResourceAsStream(prefix + name);
+    InputStream is = Class.class.getResourceAsStream(SAMPLES_PATH + name);
     if (is == null) {
       throw new RuntimeException("Samples InputStream == null");
     }
