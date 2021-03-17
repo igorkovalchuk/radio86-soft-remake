@@ -17,7 +17,7 @@ public class Radio86rk extends javax.swing.JFrame {
 
 	private boolean freeze = false;
 
-	private Console console = new Console();
+	private TerminalModel console = new TerminalModel();
 
 	public Radio86rk() {
 		initComponents();
@@ -78,7 +78,7 @@ public class Radio86rk extends javax.swing.JFrame {
 			@Override
 			public void run() {
 				if (true) {
-					Console c = canvas.getConsole();
+					TerminalModel c = canvas.getConsole();
 					for(int r = 3; r < 25; r+=4)
 						circle(c, 75, 25, r);
 				}
@@ -98,7 +98,7 @@ public class Radio86rk extends javax.swing.JFrame {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					Console c = canvas.getConsole();
+					TerminalModel c = canvas.getConsole();
 					canvas.setPartialRepaint(true);
 					canvas.repaint();
 					canvas.setPartialRepaint(false);
@@ -115,7 +115,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		this.freeze = freeze;
 	}
 
-	public Console getConsole() {
+	public TerminalModel getConsole() {
 		return canvas.getConsole();
 	}
 
@@ -123,7 +123,7 @@ public class Radio86rk extends javax.swing.JFrame {
 		return canvas;
 	}
 
-	private void circle(Console c, double rx, double ry, double r) {
+	private void circle(TerminalModel c, double rx, double ry, double r) {
 		for (double i = 0; i <= 2 * Math.PI; i += 0.03) {
 			c.plot(
 					(int)Math.rint(rx + Math.cos(i) * r),
@@ -427,7 +427,7 @@ public class Radio86rk extends javax.swing.JFrame {
   }
 
     private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
-        Console console = canvas.getConsole();
+        TerminalModel console = canvas.getConsole();
 		if (jCheckBoxMenuItemColoredCharset.isSelected()) {
 			console.setColoredCharset(true);
 		}

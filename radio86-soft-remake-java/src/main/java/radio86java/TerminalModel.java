@@ -3,7 +3,7 @@ package radio86java;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
-public class Console {
+public class TerminalModel {
 
 	private final int maxX = 64; // 64
 	private final int maxY = 25; // 25
@@ -20,7 +20,7 @@ public class Console {
 	// 1 => 0 at bottom, 24 at top; 0 => 0 at top, 24 at bottom;
 	private final int directionUp = 1; // 0 or 1; default is 1;
 
-	public Console() {
+	public TerminalModel() {
 		cls();
 		pointUpLeft();
 	}

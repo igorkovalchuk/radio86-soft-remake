@@ -14,7 +14,7 @@ public class Monitor extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Charset charset = new Charset();
 
-	private final Console console;
+	private final TerminalModel console;
 
 	private final int multiplier;
 
@@ -28,7 +28,7 @@ public class Monitor extends JPanel {
 	 * @param multiplier 1 for 8*8 pixels or 2 for 16*16 pixels;
 	 * @param space some space around chars
 	 */
-	public Monitor(Console console, int multiplier, int space) {
+	public Monitor(TerminalModel console, int multiplier, int space) {
 		this.console = console;
 		this.multiplier = multiplier;
 		this.pixelsX = 8 * multiplier + space;
@@ -55,7 +55,7 @@ public class Monitor extends JPanel {
 
 	}
 
-	public Console getConsole() {
+	public TerminalModel getConsole() {
 		return console;
 	}
 
@@ -145,7 +145,7 @@ public class Monitor extends JPanel {
 
 	}
 
-	private void render(Graphics2D g2d, int screenX, int screenY, char c, Console console) {
+	private void render(Graphics2D g2d, int screenX, int screenY, char c, TerminalModel console) {
 		ImageIcon imageIcon;
 		BufferedImage bi;
 

@@ -151,7 +151,7 @@ public class Radio86rkAPI {
 	// arc in degrees;
 	public void arcD(double x, double y, double r, double a1, double a2) {
 		if (instance != null && instance.screen != null) {
-			Console c = instance.screen.getConsole();
+			TerminalModel c = instance.screen.getConsole();
 			for (double i = a1 * Math.PI; i <= a2 * Math.PI; i += 0.03) {
 				c.plot(
 					(int)Math.rint(x + Math.cos(i) * r),
@@ -163,7 +163,7 @@ public class Radio86rkAPI {
 
 	public void circle(double x, double y, double r) {
 		if (instance != null && instance.screen != null) {
-			Console c = instance.screen.getConsole();
+			TerminalModel c = instance.screen.getConsole();
 			for (double i = 0; i <= 2 * Math.PI; i += 0.03) {
 				c.plot((int)Math.rint(x + Math.cos(i) * r),
 					(int)Math.rint(y + Math.sin(i) * r), 1);
