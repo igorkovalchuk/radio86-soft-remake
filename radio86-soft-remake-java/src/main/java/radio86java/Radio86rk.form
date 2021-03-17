@@ -143,6 +143,32 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sampleOhotaMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sampleCircles01MenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Circles 1, freeze (js)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sampleCircles01MenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sampleCircles02MenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Circles 2, freeze (js)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sampleCircles02MenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sampleTextMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Text effects (js)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sampleTextMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="sample1BasMenuItem">
@@ -250,8 +276,8 @@
         <Container class="javax.swing.JScrollPane" name="jScrollPaneBasic">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Basic">
-                <Property name="tabTitle" type="java.lang.String" value="Basic"/>
+              <JTabbedPaneConstraints tabName="Editor">
+                <Property name="tabTitle" type="java.lang.String" value="Editor"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

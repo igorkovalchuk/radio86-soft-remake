@@ -163,6 +163,10 @@ public class Radio86rk extends javax.swing.JFrame {
     jSeparator2 = new javax.swing.JPopupMenu.Separator();
     sampleSignalMenuItem = new javax.swing.JMenuItem();
     sampleOhotaMenuItem = new javax.swing.JMenuItem();
+    jSeparator4 = new javax.swing.JPopupMenu.Separator();
+    sampleCircles01MenuItem = new javax.swing.JMenuItem();
+    sampleCircles02MenuItem = new javax.swing.JMenuItem();
+    sampleTextMenuItem = new javax.swing.JMenuItem();
     jSeparator1 = new javax.swing.JPopupMenu.Separator();
     sample1BasMenuItem = new javax.swing.JMenuItem();
     sample2BasMenuItem = new javax.swing.JMenuItem();
@@ -178,7 +182,7 @@ public class Radio86rk extends javax.swing.JFrame {
 
     jScrollPaneBasic.setViewportView(jEditorPane);
 
-    jTabbedPane.addTab("Basic", jScrollPaneBasic);
+    jTabbedPane.addTab("Editor", jScrollPaneBasic);
 
     fileMenu.setMnemonic('f');
     fileMenu.setText("File");
@@ -296,6 +300,31 @@ public class Radio86rk extends javax.swing.JFrame {
       }
     });
     loadMenu.add(sampleOhotaMenuItem);
+    loadMenu.add(jSeparator4);
+
+    sampleCircles01MenuItem.setText("Circles 1, freeze (js)");
+    sampleCircles01MenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        sampleCircles01MenuItemActionPerformed(evt);
+      }
+    });
+    loadMenu.add(sampleCircles01MenuItem);
+
+    sampleCircles02MenuItem.setText("Circles 2, freeze (js)");
+    sampleCircles02MenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        sampleCircles02MenuItemActionPerformed(evt);
+      }
+    });
+    loadMenu.add(sampleCircles02MenuItem);
+
+    sampleTextMenuItem.setText("Text effects (js)");
+    sampleTextMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        sampleTextMenuItemActionPerformed(evt);
+      }
+    });
+    loadMenu.add(sampleTextMenuItem);
     loadMenu.add(jSeparator1);
 
     sample1BasMenuItem.setText("Пример 1 (bas)");
@@ -455,6 +484,21 @@ public class Radio86rk extends javax.swing.JFrame {
     updateText(f);
   }//GEN-LAST:event_sample3BasMenuItemActionPerformed
 
+  private void sampleTextMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleTextMenuItemActionPerformed
+    String f = loadResource("text_effects.js");
+    updateText(f);
+  }//GEN-LAST:event_sampleTextMenuItemActionPerformed
+
+  private void sampleCircles01MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleCircles01MenuItemActionPerformed
+    String f = loadResource("circles_01.js");
+    updateText(f);
+  }//GEN-LAST:event_sampleCircles01MenuItemActionPerformed
+
+  private void sampleCircles02MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleCircles02MenuItemActionPerformed
+    String f = loadResource("circles_02.js");
+    updateText(f);
+  }//GEN-LAST:event_sampleCircles02MenuItemActionPerformed
+
   private void updateText(String text) {
     if (this.getEditor().getText().trim().length() == 0) {
       this.getEditor().setText(text);
@@ -548,6 +592,7 @@ public class Radio86rk extends javax.swing.JFrame {
   private javax.swing.JScrollPane jScrollPaneConsole;
   private javax.swing.JPopupMenu.Separator jSeparator1;
   private javax.swing.JPopupMenu.Separator jSeparator2;
+  private javax.swing.JPopupMenu.Separator jSeparator4;
   private javax.swing.JTabbedPane jTabbedPane;
   private javax.swing.JMenu loadMenu;
   private javax.swing.JMenuBar menuBar;
@@ -561,8 +606,11 @@ public class Radio86rk extends javax.swing.JFrame {
   private javax.swing.JMenuItem sample2MenuItem;
   private javax.swing.JMenuItem sample3BasMenuItem;
   private javax.swing.JMenuItem sample3MenuItem;
+  private javax.swing.JMenuItem sampleCircles01MenuItem;
+  private javax.swing.JMenuItem sampleCircles02MenuItem;
   private javax.swing.JMenuItem sampleOhotaMenuItem;
   private javax.swing.JMenuItem sampleSignalMenuItem;
+  private javax.swing.JMenuItem sampleTextMenuItem;
   private javax.swing.JMenuItem saveAsMenuItem;
   private javax.swing.JMenuItem saveMenuItem;
   // End of variables declaration//GEN-END:variables

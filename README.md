@@ -47,8 +47,12 @@ Just for fun ... наподобие очень примитивного псев
 
 * circle(x, y, r)
 * log(message)
+
 * freeze() // останов отрисовки экрана, чтобы быстро вывести много символов в экранную область;
 * unfreeze() // возобновление отрисовки экрана;
+
+* f = localFile(location, fileName); a = f.asArray();
+* f = remoteFile(path); a = f.asArray();
 
 TODO: если еще даст Бог милость пожить и будет время и настроение
 

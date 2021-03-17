@@ -57,6 +57,8 @@ public class JavaScript implements InterpreterInterface {
                     "function asc(ch) { return r86.asc(ch); }",
                     "function spc(n) { return r86.spc(n); }",
                     "function stop() { throw 'STOP!'; }",
+                    "function localFile(location, fileName) { return r86.localFile(location, fileName); }",
+                    "function remoteFile(path) { return r86.remoteFile(path); }",
                 };
 
                 StringBuilder functions = new StringBuilder();

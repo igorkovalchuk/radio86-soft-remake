@@ -2,9 +2,9 @@ package radio86java;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import radio86java.file.FileUtils;
+import radio86java.file.SimpleFileInterface;
 
 /**
  * The screen has 0-24 (25 Y), 0-63 (64 X) chars;
@@ -329,6 +329,16 @@ public class Radio86rkAPI {
 			return 0; // TODO: error
 		}
 		return (int) value.toCharArray()[0];
+	}
+
+	public SimpleFileInterface localFile(String path, String fileName) {
+		SimpleFileInterface file = FileUtils.loadLocalFile(path, fileName);
+		return file;
+	}
+
+	public SimpleFileInterface remoteFile(String path) {
+		SimpleFileInterface file = FileUtils.loadRemoteFile(path);
+		return file;
 	}
 
 	public void log(Object message) {
