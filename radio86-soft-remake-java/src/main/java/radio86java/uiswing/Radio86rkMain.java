@@ -2,11 +2,17 @@ package radio86java.uiswing;
 
 //import radio86java.basic.Basic;
 
+import radio86java.ComputerModelImpl;
+import radio86java.ComputerModelIntf;
+
+
 public class Radio86rkMain {
 
   public static void main(String[] argv) {
 
-    final UserInterfaceImpl screen = new UserInterfaceImpl();
+    ComputerModelIntf computerModel = new ComputerModelImpl();
+
+    final UserInterfaceImpl screen = new UserInterfaceImpl(computerModel);
 
     java.awt.EventQueue.invokeLater(() -> {
       screen.setVisible(true);

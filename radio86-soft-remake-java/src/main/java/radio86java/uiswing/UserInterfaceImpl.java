@@ -25,9 +25,11 @@ public class UserInterfaceImpl extends javax.swing.JFrame
 
 	private boolean freeze = false;
 
-	private ComputerModelIntf defaultComputerModel = new ComputerModelImpl();
+	private ComputerModelIntf defaultComputerModel;
 
-	public UserInterfaceImpl() {
+	public UserInterfaceImpl(ComputerModelIntf computerModel) {
+		this.defaultComputerModel= computerModel;
+
 		initComponents();
 		this.setLocationByPlatform(true);
 
