@@ -6,7 +6,7 @@ import java.util.LinkedList;
 /**
  * TerminalModel (former Console.java)
  */
-public class TerminalModel {
+public class TerminalModel implements TerminalModelIntf {
 
   private final int maxX = 64; // 64
   private final int maxY = 25; // 25
@@ -36,6 +36,7 @@ public class TerminalModel {
     memory.poke(memory.getAddr(y, x), c);
   }
 
+  @Override
   public void poke(int addr, int value) {
     memory.poke(addr, value);
     int[] yx = memory.getYX(addr);
@@ -47,15 +48,17 @@ public class TerminalModel {
     }
   }
 
+  @Override
   public int peek(int addr) {
     return memory.peek(addr);
   }
 
+  @Override
   public int getDirectionUp() {
     return directionUp;
   }
 
-  public final void pointUpLeft() {
+  private void pointUpLeft() {
     point(0, lastY);
   }
 
@@ -64,22 +67,27 @@ public class TerminalModel {
   //  return Arrays.copyOf(screen, screen.length);
   //}
 
+  @Override
   public int getMaxX() {
     return maxX;
   }
 
+  @Override
   public int getMaxY() {
     return maxY;
   }
 
+  @Override
   public int getCursorX() {
     return cursorX;
   }
 
+  @Override
   public int getCursorY() {
     return cursorY;
   }
 
+  @Override
   public final void cls() {
     for (int y = 0; y < maxY; y++) {
       for (int x = 0; x < maxX; x++) {
@@ -88,6 +96,7 @@ public class TerminalModel {
     }
   }
 
+  @Override
   public void print(String s) {
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
@@ -95,6 +104,7 @@ public class TerminalModel {
     }
   }
 
+  @Override
   public void println(String s) {
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
@@ -107,6 +117,7 @@ public class TerminalModel {
   ////////////////////////////////////////////////////////////////////////////////////////////////
   private boolean interactive = true;
 
+  @Override
   public void setInteractive(boolean interactive) {
     this.interactive = interactive;
     synchronized (keyboardQueue) {
@@ -115,6 +126,7 @@ public class TerminalModel {
     }
   }
 
+  @Override
   public boolean isInteractive() {
     return interactive;
   }
@@ -123,6 +135,7 @@ public class TerminalModel {
   private final LinkedList<KeyEvent> keyboardQueue = new LinkedList<>();
   private final LinkedList<Long> keyboardQueueDate = new LinkedList<>();
 
+  @Override
   public void key(KeyEvent e) {
     char c = e.getKeyChar();
     int k = e.getKeyCode();
@@ -154,6 +167,7 @@ public class TerminalModel {
 
   }
 
+  @Override
   public KeyEvent getLastKeyboardEvent(int timeout) {
     KeyEvent event;
     Long time;
@@ -301,6 +315,7 @@ public class TerminalModel {
     }
   }
 
+  @Override
   public char get(int x, int y) {
     if (inScreen(x, y)) {
       return screen[y][x];
@@ -321,6 +336,7 @@ public class TerminalModel {
     cursorY = cY;
   }
 
+  @Override
   public void point(int x, int y) {
     if (x > lastX) {
       x = lastX;
@@ -332,6 +348,7 @@ public class TerminalModel {
     cursorY = y;
   }
 
+  @Override
   public void tab(int x) {
     if ((cursorX + x) > lastX) {
       // ignore - this is an incorrect value;
@@ -343,6 +360,7 @@ public class TerminalModel {
   private int pointX = 0;
   private int pointY = 0;
 
+  @Override
   public void plot(int x, int y, int z) {
 
     //System.out.println("plot " + x + " " + y + " " + z);
@@ -392,6 +410,7 @@ public class TerminalModel {
     set(x1, y1, c);
   }
 
+  @Override
   public void line(int toX, int toY) {
     int x1 = pointX;
     int y1 = pointY;
@@ -456,10 +475,12 @@ public class TerminalModel {
 
   private boolean coloredCharset = false;
 
+  @Override
   public void setColoredCharset(boolean value) {
     this.coloredCharset = value;
   }
 
+  @Override
   public boolean isColoredCharset() {
     return this.coloredCharset;
   }

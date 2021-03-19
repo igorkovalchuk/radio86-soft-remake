@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import radio86java.ComputerModelIntf;
-import radio86java.TerminalModel;
+import radio86java.TerminalModelIntf;
 
 public class TerminalView extends JPanel {
 
@@ -40,7 +40,7 @@ public class TerminalView extends JPanel {
 
   void init() {
 
-    TerminalModel console = getTerminalModel();
+    TerminalModelIntf console = getTerminalModel();
 
     setBackground(Color.BLACK);
     Dimension d = new Dimension(console.getMaxX() * pixelsX, console.getMaxY() * pixelsY);
@@ -51,7 +51,7 @@ public class TerminalView extends JPanel {
     charset.init();
   }
 
-  private TerminalModel getTerminalModel() {
+  private TerminalModelIntf getTerminalModel() {
     return computerModel.getTerminalModel();
   }
 
@@ -79,7 +79,7 @@ public class TerminalView extends JPanel {
 
     super.paintComponent(g);
 
-    TerminalModel console = getTerminalModel();
+    TerminalModelIntf console = getTerminalModel();
 
     Graphics2D g2d = (Graphics2D) g;
 
@@ -94,7 +94,7 @@ public class TerminalView extends JPanel {
 
   private void drawCursor(Graphics2D g2d, int x, int y) {
 
-    TerminalModel console = getTerminalModel();
+    TerminalModelIntf console = getTerminalModel();
 
     if (console.getDirectionUp() > 0) {
       y = (console.getMaxY() - 1 - console.getCursorY());
@@ -111,7 +111,7 @@ public class TerminalView extends JPanel {
     int screenY = 0;
     int screenX = 0;
 
-    TerminalModel console = getTerminalModel();
+    TerminalModelIntf console = getTerminalModel();
 
     if (console.getDirectionUp() > 0) {
       for (int y = (console.getMaxY() - 1); y >= 0; y--) {
@@ -137,7 +137,7 @@ public class TerminalView extends JPanel {
 
   }
 
-  private void render(Graphics2D g2d, int screenX, int screenY, char c, TerminalModel console) {
+  private void render(Graphics2D g2d, int screenX, int screenY, char c, TerminalModelIntf console) {
     ImageIcon imageIcon;
     BufferedImage bi;
 

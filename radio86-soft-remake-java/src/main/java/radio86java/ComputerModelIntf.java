@@ -8,6 +8,6 @@ public interface ComputerModelIntf {
   /**
    * @return previously chosen terminal
    */
-  TerminalModel getTerminalModel();
+  TerminalModelIntf getTerminalModel();
 
 }

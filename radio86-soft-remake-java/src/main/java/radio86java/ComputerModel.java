@@ -8,7 +8,7 @@ public class ComputerModel implements ComputerModelIntf {
   }
 
   @Override
-  public TerminalModel getTerminalModel() {
+  public TerminalModelIntf getTerminalModel() {
     return terminalModel;
   }
 

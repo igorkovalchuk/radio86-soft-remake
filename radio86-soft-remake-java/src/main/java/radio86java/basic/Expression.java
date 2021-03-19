@@ -109,7 +109,7 @@ public class Expression {
     }
   }
 
-  private ArrayList<String> prms = new ArrayList<String>();
+  private ArrayList<String> prms = new ArrayList<>();
 
   private String[] readParameters(int index, int number, BasicVariables variables) throws ScriptException {
     prms.clear();

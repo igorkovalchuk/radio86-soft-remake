@@ -9,10 +9,10 @@ import javax.swing.event.ChangeEvent;
 import radio86java.InterpreterFactory;
 import radio86java.InterpreterInterface;
 import radio86java.Listing;
-import radio86java.TerminalModel;
 import radio86java.UserInterfaceIntf;
 import static radio86java.uiswing.Utils.loadResource;
 import radio86java.ComputerModelIntf;
+import radio86java.TerminalModelIntf;
 
 public class UserInterfaceImpl extends javax.swing.JFrame
         implements UserInterfaceIntf {
@@ -93,10 +93,6 @@ public class UserInterfaceImpl extends javax.swing.JFrame
         canvas.setPartialRepaint(false);
       });
     }
-  }
-
-  public boolean isFreeze() {
-    return freeze;
   }
 
   @Override
@@ -407,7 +403,7 @@ public class UserInterfaceImpl extends javax.swing.JFrame
   }
 
     private void jCheckBoxMenuItemColoredCharsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemColoredCharsetActionPerformed
-      TerminalModel console = getComputerModel().getTerminalModel();
+      TerminalModelIntf console = getComputerModel().getTerminalModel();
       if (jCheckBoxMenuItemColoredCharset.isSelected()) {
         console.setColoredCharset(true);
       } else {
