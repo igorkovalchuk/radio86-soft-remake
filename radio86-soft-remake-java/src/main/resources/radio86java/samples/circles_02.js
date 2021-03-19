@@ -3,6 +3,11 @@
  * Animation looks better/smoother when the "colored charset" enabled.
  */
 
+const start = Date.now();
+var millis;
+var iteration = 0;
+var fps = 0;
+
 cls()
 
 attempts = 20;
@@ -18,6 +23,11 @@ for (j = 1; j <= attempts; j++) {
         cls();
         circle1(x0, y0, i);
         unfreeze();
+        iteration++;
+        cur(0, 0);
+        millis = Date.now() - start;
+        fps = Math.floor(iteration / (millis / 1000));
+        print("FPS " + fps + " ");
         pause(0.01);
     }
 
