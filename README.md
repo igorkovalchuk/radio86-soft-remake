@@ -9,6 +9,18 @@ Radio 86RK retrocomputer simulator (BASIC operators using JavaScript, pseudo-gra
 
 Just for fun ... наподобие очень примитивного псевдографического Скретча, максимальная простота программирования/конструкций.
 
+===================
+
+https://youtu.be/EhG3Ieszp30 - программа "Сигнал", журнал "Радио", 1988 год, переписана на JavaScript
+
+https://youtu.be/uPpFo8cquQc - программа "Охота на лис" журнал "Радио", 1987 год, переписана на JavaScript
+
+https://youtu.be/FJ0fKsfPCEE - демо "Круги"
+
+https://youtu.be/VsgSy798OGg - демо "Текстовые эффекты"
+
+===================
+
 Работающие операторы и ф-ии: 
 
 * plot(x,y,1) // псевдографика;
