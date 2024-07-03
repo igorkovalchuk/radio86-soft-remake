@@ -9,6 +9,8 @@ Radio 86RK retrocomputer simulator (BASIC operators using JavaScript, pseudo-gra
 
 Just for fun ... наподобие очень примитивного псевдографического Скретча, максимальная простота программирования/конструкций.
 
+P.S. online version of the simulator: https://github.com/igorkovalchuk/radio-86rk-simulator-js
+
 ===================
 
 https://youtu.be/EhG3Ieszp30 - программа "Сигнал", журнал "Радио", 1988 год, переписана на JavaScript
